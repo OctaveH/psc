@@ -177,3 +177,89 @@
 	<cmath>
 	"util.h"
 
+1544385843 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resources.rc
+	"resource.h"
+	"winresrc.h"
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resource.h
+
+1553368840 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
+	<iostream>
+	"../include/util.h"
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\util.h
+	"objects.h"
+	"common.h"
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\objects.h
+	<ode/common.h>
+	<ode/memory.h>
+	<ode/mass.h>
+	"error.h"
+	"array.h"
+	"common.h"
+	"threading_base.h"
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\common.h
+	<ode/odeconfig.h>
+	<ode/error.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeconfig.h
+	<stddef.h>
+	<limits.h>
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<math.h>
+	<string.h>
+	<float.h>
+	<ode/precision.h>
+	<stdint.h>
+
+1551878017 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\precision.h
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\error.h
+	<ode/odeconfig.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\memory.h
+	<ode/odeconfig.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\mass.h
+	<ode/common.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\error.h
+	<ode/error.h>
+	<ode/common.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\array.h
+	<ode/odeconfig.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\common.h
+	"typedefs.h"
+	"error.h"
+	<ode/memory.h>
+	<algorithm>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\typedefs.h
+	<ode/odeconfig.h>
+	"error.h"
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\threading_base.h
+	"common.h"
+	<ode/threading.h>
+
+1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading.h
+	<ode/odeconfig.h>
+	<time.h>
+
+1553366496 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\util.cpp
+	<iostream>
+	<array>
+	<cmath>
+	"util.h"
+
+1553366674 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
+	<iostream>
+	<array>
+	<cmath>
+

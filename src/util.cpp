@@ -4,10 +4,10 @@
 #include <cmath>
 #include "util.h"
 
-typedef float num_type;
-typedef std::array<num_type,3> vec3;
-typedef std::array<vec3,3> mat3;
-typedef std::array<num_type,16> mat4;
+typedef float num_type; // pour pouvoir facilement passé à un double si besoin
+typedef std::array<num_type,3> vec3; // vecteur de position de dim 3
+typedef std::array<vec3,3> mat3; // matrice de 3 vecteurs de dim 3, les vecteurs sont des lignes
+typedef std::array<num_type,16> mat4; //matrice 4*4
 
 num_type sign(num_type x)
 {
@@ -44,7 +44,7 @@ vec3 operator*(num_type s, const vec3 &v)
 
 vec3 operator/(const vec3 &v, num_type s)
 {
-    return {s/v[0], s/v[1], s/v[2]};
+    return {v[0]/s, v[1]/s, v[2]/s};
 }
 
 vec3 unit3(const vec3 &v)
@@ -123,4 +123,8 @@ mat4 makeOpenGLMatrix(const mat3 R, const vec3 p)
             p[0], p[1], p[2], 1.0};
 }
 
-
+std::ostream& operator<<(std::ostream& s, const vec3& v)
+{
+    s << "[" << v[0] << " ," << v[1] << " ," << v[2] << "]";
+    return s;
+}
