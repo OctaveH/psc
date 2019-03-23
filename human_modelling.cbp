@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="human_modelling" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="DebugDoubleLib">
+				<Option output="template.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-D_CRT_SECURE_NO_DEPRECATE" />
+					<Add option="-DWIN32" />
+					<Add option="-DdDOUBLE" />
+					<Add directory="../../include" />
+					<Add directory="../../ode/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../include" />
+					<Add directory="../../ode/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="oded" />
+					<Add library="drawstuffd" />
+					<Add library="user32" />
+					<Add library="winmm" />
+					<Add library="gdi32" />
+					<Add library="opengl32" />
+					<Add library="glu32" />
+					<Add directory="../../lib/Debug" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="../../drawstuff/src/resources.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="human_modelling.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
