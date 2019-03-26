@@ -5,9 +5,11 @@
 
 1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\drawstuff\src\resource.h
 
-1553354063 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
+1553546782 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
 	<iostream>
-	"util.h"
+	<ode/ode.h>
+	<drawstuff/drawstuff.h>
+	"../include/util.h"
 
 1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\ode.h
 	<ode/odeconfig.h>
@@ -171,7 +173,7 @@
 	"common.h"
 	<ode/threading.h>
 
-1553356664 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\util.cpp
+1553370010 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\util.cpp
 	<iostream>
 	<array>
 	<cmath>
@@ -259,6 +261,11 @@
 	"util.h"
 
 1553366674 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
+	<iostream>
+	<array>
+	<cmath>
+
+1553370010 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\util.h
 	<iostream>
 	<array>
 	<cmath>
