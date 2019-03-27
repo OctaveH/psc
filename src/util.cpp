@@ -1,10 +1,15 @@
 #include <iostream>
 #include <array>
-
+#include "GL/gl.h"
+#include "GL/glext.h"
+#include "GL/glu.h"
 #include <cmath>
 #include "util.h"
+#include <ode/ode.h>
 
-typedef float num_type; // pour pouvoir facilement passé à un double si besoin
+
+
+typedef dReal num_type; // pour pouvoir facilement passé à un double si besoin
 typedef std::array<num_type,3> vec3; // vecteur de position de dim 3
 typedef std::array<vec3,3> mat3; // matrice de 3 vecteurs de dim 3, les vecteurs sont des lignes
 typedef std::array<num_type,16> mat4; //matrice 4*4
@@ -50,6 +55,10 @@ vec3 operator/(const vec3 &v, num_type s)
 vec3 unit3(const vec3 &v)
 {
     return v/norm(v);
+}
+
+num_type dist3(const vec3 &u, const vec3 &v){
+    return norm(u-v);
 }
 
 num_type dot3(const vec3 &u, const vec3 &v)
@@ -128,3 +137,5 @@ std::ostream& operator<<(std::ostream& s, const vec3& v)
     s << "[" << v[0] << " ," << v[1] << " ," << v[2] << "]";
     return s;
 }
+
+

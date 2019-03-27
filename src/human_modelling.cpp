@@ -7,7 +7,7 @@ void test1() // test partie 1 opération sur les vecteurs
     num_type n= 1.5;
     vec3 u={1, 1, 1};
     vec3 v={2, 3, 4};
-    mat3 A={u,u,u};
+    mat3 A={u,u,v};
 
     std :: cout << "u=" <<u << ", v=" << v <<", n=" << n << std::endl;
 
