@@ -56,7 +56,10 @@ A faire remplir les tableaux geoms et bodies (dans addBody()) et joints (dans se
 Faire le headerdile
 */
 
-
+    Ragdoll::Ragdoll()
+    {
+        return;
+    }
 
     Ragdoll::Ragdoll (dWorldID _world, dSpaceID _space, dReal _density, vec3 _offset){
 
@@ -102,7 +105,7 @@ Faire le headerdile
 		rightHand = addBody(R_WRIST_POS, R_FINGERS_POS, 0.075);
 		rightWrist = addBallJoint(rightForeArm, rightHand, R_WRIST_POS);
 		leftHand = addBody(L_WRIST_POS, L_FINGERS_POS, 0.075);
-		leftWrist = addBallJoint(leftForeArm,leftHand, L_WRIST_POS);
+		leftWrist = addBallJoint(leftForeArm,leftHand, L_WRIST_POS); std::cout << "init ok \n";
     }
 
     dBodyID Ragdoll::addBody(vec3 p1,vec3 p2,num_type radius){
@@ -119,7 +122,7 @@ Faire le headerdile
 		vec3 center_of_mass=0.5*(p1+p2);
 		dBodySetPosition(body, center_of_mass[0], center_of_mass[1], center_of_mass[2]);
 
-        dGeomID geom=dCreateCylinder(space, radius, cyllen);
+        dGeomID geom=dCreateCapsule(space, radius, cyllen);
         dGeomSetBody(geom, body);
 
         vec3 za=unit3(p2-p1);
@@ -128,11 +131,22 @@ Faire le headerdile
         if (fabs(dot3(vec,za))<0.7) {xa=vec;}
         vec3 ya=cross(za, xa);
         xa=unit3(cross(ya, za));
-        dReal rot[12]={xa[0], ya[0], za[0], xa[1], ya[1], za[1], xa[2], ya[2], za[2], 0.0, 0.0, 0.0};
+        dMatrix3 rot;
+        dRSetIdentity(rot);
+        dRFrom2Axes(rot, xa[0], xa[1], xa[2], ya[0], ya[1], ya[2]);
+        //{xa[0], ya[0], za[0], xa[1], ya[1], za[1], xa[2], ya[2], za[2], 0.0, 0.0, 0.0};
+        //std::cout << xa[0] << " " << ya[0] " " << za[0] << std::endl;
+        //std::cout << xa[0] << " " << xa[1] " " << xa[1] << "\n" << std::endl;
 		dBodySetRotation(body, rot);
 		totalMass+=m.mass;
-		geoms[b]=geom;
-		bodies[b]=body;
+		std::cout << "l. 139 rang : " << b;
+		body_parts[b].body = body;
+		body_parts[b].geom = geom;
+		body_parts[b].length = cyllen;
+		body_parts[b].radius = radius;
+//		geoms[b]=geom;
+//		bodies[b]=body;
+		std::cout << " ok" << std::endl;
 		b++;
 		return body;
 
@@ -200,8 +214,11 @@ Faire le headerdile
         dJointGroupID group_joint =dJointGroupCreate (0); //0cf doc ode
         dJointID joint=dJointCreateFixed(world, group_joint);
         dJointAttach(joint, body1, body2);
+        dJointSetFixed(joint);
         //il faut rajouter le joint à joint
+        std::cout << "l. 211 rang : " << j;
         joints[j]=joint;
+        std::cout << " ok" << std::endl;
         j++;
         return joint;
     }
@@ -210,8 +227,10 @@ Faire le headerdile
         dJointGroupID group_joint =dJointGroupCreate (0); //0cf doc ode
         dJointID joint=dJointCreateBall(world, group_joint);
         dJointAttach(joint, body1, body2);
-        dJointSetBallAnchor(joint,anchor[0], anchor[1], anchor[2]);
+        dJointSetBallAnchor(joint,anchor[0]+offset[0], anchor[1]+offset[1], anchor[2]+offset[2]);
+        std::cout << "l. 223 rang : " << j;
         joints[j]=joint;
+        std::cout << " ok" << std::endl;
         j++;
         return joint;
         //ajouter joint à joints

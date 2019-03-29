@@ -38,7 +38,9 @@
 		<Unit filename="../../drawstuff/src/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="include/body.h" />
 		<Unit filename="include/util.h" />
+		<Unit filename="src/body.cpp" />
 		<Unit filename="src/human_modelling.cpp" />
 		<Unit filename="src/util.cpp" />
 		<Extensions>
