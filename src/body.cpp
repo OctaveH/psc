@@ -58,7 +58,7 @@ const vec3 bkwdAxis = {0.0, 0.0, 1.0};
 const vec3 fwdAxis = {0.0, 0.0, -1.0};
 
 /*
-problème de type: quand est ce qu'on utilise dReal, dMat3, dVector3?
+problï¿½me de type: quand est ce qu'on utilise dReal, dMat3, dVector3?
 A faire remplir les tableaux geoms et bodies (dans addBody()) et joints (dans setJoint())
 Faire le headerdile
 */
@@ -214,7 +214,7 @@ Faire le headerdile
 		m.setCappedCylinder(self.density, 3, radius, cyllen)
 		body.setMass(m)
 
-		# set parameters for drawing the body   !!!!!!je sas pas trop à quoi ça correspond (mais je
+		# set parameters for drawing the body   !!!!!!je sas pas trop ï¿½ quoi ï¿½a correspond (mais je
 		body.shape = "capsule"                        pense qu'on en a pas besoin!!!!!!!
 		body.length = cyllen
 		body.radius = radius
@@ -257,7 +257,7 @@ Faire le headerdile
         dJointGroupID group_joint =dJointGroupCreate (0); //0cf doc ode
         dJointID joint=dJointCreateFixed(world, group_joint);
         dJointAttach(joint, body1, body2);
-        //il faut rajouter le joint à joint
+        //il faut rajouter le joint ï¿½ joint
         joints[j]=joint;
         j++;
         return joint;
@@ -303,7 +303,7 @@ Faire le headerdile
         joints[j]=joint;
         j++;
         return joint;
-        //ajouter joint à joints
+        //ajouter joint ï¿½ joints
     }
 	/*def addBallJoint(self, body1, body2, anchor):
 

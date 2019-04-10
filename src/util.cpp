@@ -10,7 +10,7 @@
 
 
 
-typedef dReal num_type; // pour pouvoir facilement passé à un double si besoin
+typedef dReal num_type; // pour pouvoir facilement passï¿½ ï¿½ un double si besoin
 typedef std::array<num_type,3> vec3; // vecteur de position de dim 3
 typedef std::array<vec3,3> mat3; // matrice de 3 vecteurs de dim 3, les vecteurs sont des lignes
 typedef std::array<num_type,16> mat4; //matrice 4*4
