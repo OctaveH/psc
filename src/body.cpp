@@ -50,8 +50,15 @@ const vec3 L_HEEL_POS = L_ANKLE_POS-a4;
 const vec3 R_TOES_POS = R_ANKLE_POS+a5;
 const vec3 L_TOES_POS = L_ANKLE_POS+a5;
 
+const vec3 rightAxis = {1.0, 0.0, 0.0};
+const vec3 leftAxis = {-1.0, 0.0, 0.0};
+const vec3 upAxis = {0.0, 1.0, 0.0};
+const vec3 downAxis = {0.0, -1.0, 0.0};
+const vec3 bkwdAxis = {0.0, 0.0, 1.0};
+const vec3 fwdAxis = {0.0, 0.0, -1.0};
+
 /*
-problème de type: quand est ce qu'on utilise dReal, dMat3, dVector3?
+problï¿½me de type: quand est ce qu'on utilise dReal, dMat3, dVector3?
 A faire remplir les tableaux geoms et bodies (dans addBody()) et joints (dans setJoint())
 Faire le headerdile
 */
@@ -77,36 +84,86 @@ Faire le headerdile
 		head = addBody({0.0, BROW_H, 0.0}, {0.0, MOUTH_H, 0.0}, 0.11);
 		neck = addBallJoint(chest, head,{0.0, NECK_H, 0.0});
 
+		/*self.rightUpperLeg = self.addBody(R_HIP_POS, R_KNEE_POS, 0.11)
+		self.rightHip = self.addUniversalJoint(self.pelvis, self.rightUpperLeg,
+			R_HIP_POS, bkwdAxis, rightAxis, -0.1 * pi, 0.3 * pi, -0.15 * pi,
+			0.75 * pi)
+		self.leftUpperLeg = self.addBody(L_HIP_POS, L_KNEE_POS, 0.11)
+		self.leftHip = self.addUniversalJoint(self.pelvis, self.leftUpperLeg,
+			L_HIP_POS, fwdAxis, rightAxis, -0.1 * pi, 0.3 * pi, -0.15 * pi,
+			0.75 * pi)*/
+
 		rightUpperLeg = addBody(R_HIP_POS, R_KNEE_POS, 0.11);
-		rightHip = addBallJoint(pelvis, rightUpperLeg,R_HIP_POS);
+		rightHip = addUniversalJoint(pelvis, rightUpperLeg,R_HIP_POS, bkwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
 		leftUpperLeg = addBody(L_HIP_POS, L_KNEE_POS, 0.11);
-		leftHip = addBallJoint(pelvis, leftUpperLeg,L_HIP_POS);
+		leftHip = addUniversalJoint(pelvis, leftUpperLeg,L_HIP_POS, fwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
+
+				/*self.rightLowerLeg = self.addBody(R_KNEE_POS, R_ANKLE_POS, 0.09)
+		self.rightKnee = self.addHingeJoint(self.rightUpperLeg,
+			self.rightLowerLeg, R_KNEE_POS, leftAxis, 0.0, pi * 0.75)
+		self.leftLowerLeg = self.addBody(L_KNEE_POS, L_ANKLE_POS, 0.09)
+		self.leftKnee = self.addHingeJoint(self.leftUpperLeg,
+			self.leftLowerLeg, L_KNEE_POS, leftAxis, 0.0, pi * 0.75)*/
 
 		rightLowerLeg = addBody(R_KNEE_POS, R_ANKLE_POS, 0.09);
-		rightKnee = addBallJoint(rightUpperLeg,rightLowerLeg, R_KNEE_POS);
+		rightKnee = addHingeJoint(rightUpperLeg,rightLowerLeg, R_KNEE_POS, leftAxis, 0.0, M_PI*0.75);
 		leftLowerLeg = addBody(L_KNEE_POS, L_ANKLE_POS, 0.09);
-		leftKnee = addBallJoint(leftUpperLeg,leftLowerLeg, L_KNEE_POS);
+		leftKnee = addHingeJoint(leftUpperLeg,leftLowerLeg, L_KNEE_POS, leftAxis, 0.0, M_PI*0.75);
+
+		/*self.rightFoot = self.addBody(R_HEEL_POS, R_TOES_POS, 0.09)
+		self.rightAnkle = self.addHingeJoint(self.rightLowerLeg,
+			self.rightFoot, R_ANKLE_POS, rightAxis, -0.1 * pi, 0.05 * pi)
+		self.leftFoot = self.addBody(L_HEEL_POS, L_TOES_POS, 0.09)
+		self.leftAnkle = self.addHingeJoint(self.leftLowerLeg,
+			self.leftFoot, L_ANKLE_POS, rightAxis, -0.1 * pi, 0.05 * pi)*/
 
 		rightFoot = addBody(R_HEEL_POS, R_TOES_POS, 0.09);
-		rightAnkle = addBallJoint(rightLowerLeg,rightFoot, R_ANKLE_POS);
+		rightAnkle = addHingeJoint(rightLowerLeg,rightFoot, R_ANKLE_POS, rightAxis, -0.1*M_PI, 0.05*M_PI);
 		leftFoot = addBody(L_HEEL_POS, L_TOES_POS, 0.09);
-		leftAnkle = addBallJoint(leftLowerLeg, leftFoot, L_ANKLE_POS);
+		leftAnkle = addHingeJoint(leftLowerLeg, leftFoot, L_ANKLE_POS,  rightAxis, -0.1*M_PI, 0.05*M_PI);
 
 		rightUpperArm = addBody(R_SHOULDER_POS, R_ELBOW_POS, 0.08);
 		rightShoulder = addBallJoint(chest, rightUpperArm, R_SHOULDER_POS);
 		leftUpperArm = addBody(L_SHOULDER_POS, L_ELBOW_POS, 0.08);
 		leftShoulder = addBallJoint(chest, leftUpperArm,L_SHOULDER_POS);
+/*self.rightForeArm = self.addBody(R_ELBOW_POS, R_WRIST_POS, 0.075)
+		self.rightElbow = self.addHingeJoint(self.rightUpperArm,
+			self.rightForeArm, R_ELBOW_POS, downAxis, 0.0, 0.6 * pi)
+		self.leftForeArm = self.addBody(L_ELBOW_POS, L_WRIST_POS, 0.075)
+		self.leftElbow = self.addHingeJoint(self.leftUpperArm,
+			self.leftForeArm, L_ELBOW_POS, upAxis, 0.0, 0.6 * pi)*/
 
 		rightForeArm = addBody(R_ELBOW_POS, R_WRIST_POS, 0.075);
-		rightElbow = addBallJoint(rightUpperArm, rightForeArm, R_ELBOW_POS);
+		rightElbow = addHingeJoint(rightUpperArm, rightForeArm, R_ELBOW_POS, downAxis, 0.0, 0.6*M_PI);
         leftForeArm = addBody(L_ELBOW_POS, L_WRIST_POS, 0.075);
-		leftElbow = addBallJoint(leftUpperArm, leftForeArm, L_ELBOW_POS);
+		leftElbow = addHingeJoint(leftUpperArm, leftForeArm, L_ELBOW_POS, upAxis, 0.0, 0.6*M_PI);
 
+        /*self.rightHand = self.addBody(R_WRIST_POS, R_FINGERS_POS, 0.075)
+		self.rightWrist = self.addHingeJoint(self.rightForeArm,
+			self.rightHand, R_WRIST_POS, fwdAxis, -0.1 * pi, 0.2 * pi)
+		self.leftHand = self.addBody(L_WRIST_POS, L_FINGERS_POS, 0.075)
+		self.leftWrist = self.addHingeJoint(self.leftForeArm,
+			self.leftHand, L_WRIST_POS, bkwdAxis, -0.1 * pi, 0.2 * pi)*/
 		rightHand = addBody(R_WRIST_POS, R_FINGERS_POS, 0.075);
-		rightWrist = addBallJoint(rightForeArm, rightHand, R_WRIST_POS);
+		rightWrist = addHingeJoint(rightForeArm, rightHand, R_WRIST_POS, fwdAxis, -0.1*M_PI, 0.2*M_PI);
 		leftHand = addBody(L_WRIST_POS, L_FINGERS_POS, 0.075);
-		leftWrist = addBallJoint(leftForeArm,leftHand, L_WRIST_POS); std::cout << "init ok \n";
+		leftWrist = addHingeJoint(leftForeArm,leftHand, L_WRIST_POS, bkwdAxis, -0.1*M_PI, 0.2*M_PI);
     }
+
+
+/*def getBodyRelVec(b, v):
+	"""
+	Returns the 3-vector v transformed into the local coordinate system of ODE
+	body b.
+	"""
+	return rotate3(invert3x3(b.getRotation()), v)*/
+
+	vec3 Ragdoll::getBodyRelVec(dBodyID body, vec3 v){
+        const num_type* a =dBodyGetRotation(body);
+        mat3 b ={a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]};
+        v=transpose(b)*v;
+        return v;
+	}
 
     dBodyID Ragdoll::addBody(vec3 p1,vec3 p2,num_type radius){
 		p1 = p1+offset;
@@ -171,7 +228,7 @@ Faire le headerdile
 		m.setCappedCylinder(self.density, 3, radius, cyllen)
 		body.setMass(m)
 
-		# set parameters for drawing the body   !!!!!!je sas pas trop à quoi ça correspond (mais je
+		# set parameters for drawing the body   !!!!!!je sas pas trop ï¿½ quoi ï¿½a correspond (mais je
 		body.shape = "capsule"                        pense qu'on en a pas besoin!!!!!!!
 		body.length = cyllen
 		body.radius = radius
@@ -215,14 +272,46 @@ Faire le headerdile
         dJointID joint=dJointCreateFixed(world, group_joint);
         dJointAttach(joint, body1, body2);
         dJointSetFixed(joint);
-        //il faut rajouter le joint à joint
+        //il faut rajouter le joint ï¿½ joint
         std::cout << "l. 211 rang : " << j;
         joints[j]=joint;
         std::cout << " ok" << std::endl;
         j++;
         return joint;
     }
+/*def addBallJoint(self, body1, body2, anchor, baseAxis, baseTwistUp,
+		flexLimit = pi, twistLimit = pi, flexForce = 0.0, twistForce = 0.0):
 
+		anchor = add3(anchor, self.offset)
+
+		# create the joint
+		joint = ode.BallJoint(self.world)
+		joint.attach(body1, body2)
+		joint.setAnchor(anchor)
+
+		# store the base orientation of the joint in the local coordinate system
+		#   of the primary body (because baseAxis and baseTwistUp may not be
+		#   orthogonal, the nearest vector to baseTwistUp but orthogonal to
+		#   baseAxis is calculated and stored with the joint)
+		joint.baseAxis = getBodyRelVec(body1, baseAxis)
+		tempTwistUp = getBodyRelVec(body1, baseTwistUp)
+		baseSide = norm3(cross(tempTwistUp, joint.baseAxis))
+		joint.baseTwistUp = norm3(cross(joint.baseAxis, baseSide))
+
+		# store the base twist up vector (original version) in the local
+		#   coordinate system of the secondary body
+		joint.baseTwistUp2 = getBodyRelVec(body2, baseTwistUp)
+
+		# store joint rotation limits and resistive force factors
+		joint.flexLimit = flexLimit
+		joint.twistLimit = twistLimit
+		joint.flexForce = flexForce
+		joint.twistForce = twistForce
+
+		joint.style = "ball"
+		self.joints.append(joint)
+
+		return joint*/
     dJointID Ragdoll::addBallJoint(dBodyID body1, dBodyID body2, vec3 anchor){
         dJointGroupID group_joint =dJointGroupCreate (0); //0cf doc ode
         dJointID joint=dJointCreateBall(world, group_joint);
@@ -233,7 +322,7 @@ Faire le headerdile
         std::cout << " ok" << std::endl;
         j++;
         return joint;
-        //ajouter joint à joints
+        //ajouter joint ï¿½ joints
     }
 	/*def addBallJoint(self, body1, body2, anchor):
 
@@ -249,3 +338,96 @@ Faire le headerdile
 
 		return joint*/
 
+    /*def addHingeJoint(self, body1, body2, anchor, axis, loStop = -ode.Infinity, hiStop = ode.Infinity):
+
+		anchor = add3(anchor, self.offset)
+
+		joint = ode.HingeJoint(self.world)
+		joint.attach(body1, body2)
+		joint.setAnchor(anchor)
+		joint.setAxis(axis)
+		joint.setParam(ode.ParamLoStop, loStop)
+		joint.setParam(ode.ParamHiStop, hiStop)
+
+		joint.style = "hinge"
+		self.joints.append(joint)
+
+		return joint*/
+
+    dJointID Ragdoll::addHingeJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis, dReal _loStop, dReal _hiStop){
+        anchor=anchor+offset;
+        dJointGroupID group_joint =dJointGroupCreate (0);
+        dJointID joint=dJointCreateHinge(world, group_joint);
+        dJointAttach(joint, body1, body2);
+        dJointSetHingeAnchor(joint, anchor[0], anchor[1], anchor[2]);
+        dJointSetHingeAxis(joint, axis[0], axis[1], axis[2]);
+        dJointSetHingeParam(joint, dParamLoStop, _loStop);
+        dJointSetHingeParam(joint, dParamHiStop, _hiStop);
+        joints[j]=joint;
+        j++;
+        return joint;
+    }
+
+    dJointID Ragdoll::addHingeJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis){
+        anchor=anchor+offset;
+        dJointGroupID group_joint =dJointGroupCreate (0);
+        dJointID joint=dJointCreateHinge(world, group_joint);
+        dJointAttach(joint, body1, body2);
+        dJointSetHingeAnchor(joint, anchor[0], anchor[1], anchor[2]);
+        dJointSetHingeAxis(joint, axis[0], axis[1], axis[2]);
+        dJointSetHingeParam(joint, dParamLoStop, -dInfinity);
+        dJointSetHingeParam(joint, dParamHiStop, dInfinity);
+        joints[j]=joint;
+        j++;
+        return joint;
+    }
+
+    /*def addUniversalJoint(self, body1, body2, anchor, axis1, axis2,
+		loStop1 = -ode.Infinity, hiStop1 = ode.Infinity,
+		loStop2 = -ode.Infinity, hiStop2 = ode.Infinity):
+		anchor = add3(anchor, self.offset)
+		joint = ode.UniversalJoint(self.world)
+		joint.attach(body1, body2)
+		joint.setAnchor(anchor)
+		joint.setAxis1(axis1)
+		joint.setAxis2(axis2)
+		joint.setParam(ode.ParamLoStop, loStop1)
+		joint.setParam(ode.ParamHiStop, hiStop1)
+		joint.setParam(ode.ParamLoStop2, loStop2)
+		joint.setParam(ode.ParamHiStop2, hiStop2)
+        joint.style = "univ"
+		self.joints.append(joint)
+		return joint*/
+    dJointID Ragdoll::addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2, dReal _loStop1, dReal _loStop2, dReal _hiStop1, dReal _hiStop2){
+        anchor=anchor+offset;
+        dJointGroupID group_joint =dJointGroupCreate (0);
+        dJointID joint=dJointCreateUniversal(world, group_joint);
+        dJointAttach(joint, body1, body2);
+        dJointSetUniversalAnchor(joint, anchor[0], anchor[1], anchor[2]);
+        dJointSetUniversalAxis1(joint, axis1[0], axis1[1], axis1[2]);
+        dJointSetUniversalAxis2(joint, axis2[0], axis2[1], axis2[2]);
+        dJointSetUniversalParam(joint, dParamLoStop, _loStop1);
+        dJointSetUniversalParam(joint, dParamHiStop, _hiStop1);
+        dJointSetUniversalParam(joint, dParamLoStop1, _loStop1);
+        dJointSetUniversalParam(joint, dParamHiStop1, _hiStop1);
+        joints[j]=joint;
+        j++;
+        return joint;
+        }
+
+    dJointID Ragdoll::addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2){
+        anchor=anchor+offset;
+        dJointGroupID group_joint =dJointGroupCreate (0);
+        dJointID joint=dJointCreateUniversal(world, group_joint);
+        dJointAttach(joint, body1, body2);
+        dJointSetUniversalAnchor(joint, anchor[0], anchor[1], anchor[2]);
+        dJointSetUniversalAxis1(joint, axis1[0], axis1[1], axis1[2]);
+        dJointSetUniversalAxis2(joint, axis2[0], axis2[1], axis2[2]);
+        dJointSetUniversalParam(joint, dParamLoStop, -dInfinity);
+        dJointSetUniversalParam(joint, dParamHiStop, dInfinity);
+        dJointSetUniversalParam(joint, dParamLoStop1, -dInfinity);
+        dJointSetUniversalParam(joint, dParamHiStop1, dInfinity);
+        joints[j]=joint;
+        j++;
+        return joint;
+        }

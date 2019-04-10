@@ -4,12 +4,13 @@
 #include "GL/glext.h"
 #include "GL/glu.h"
 #include <cmath>
-#include "util.h"
+#include "../include/body.h"
+#include "../include/util.h"
 #include <ode/ode.h>
 
 
 
-typedef dReal num_type; // pour pouvoir facilement passé à un double si besoin
+typedef dReal num_type; // pour pouvoir facilement passï¿½ ï¿½ un double si besoin
 typedef std::array<num_type,3> vec3; // vecteur de position de dim 3
 typedef std::array<vec3,3> mat3; // matrice de 3 vecteurs de dim 3, les vecteurs sont des lignes
 typedef std::array<num_type,16> mat4; //matrice 4*4
@@ -131,6 +132,7 @@ mat4 makeOpenGLMatrix(const mat3 R, const vec3 p)
             R[0][2], R[1][2], R[2][2], 0.0,
             p[0], p[1], p[2], 1.0};
 }
+
 
 std::ostream& operator<<(std::ostream& s, const vec3& v)
 {

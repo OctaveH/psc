@@ -74,6 +74,11 @@ public:
                                                       // stocké dans body_parts.
     dJointID addFixedJoint(dBodyID body1, dBodyID body2);
     dJointID addBallJoint(dBodyID body1, dBodyID body2, vec3 anchor);
+    dJointID addHingeJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis, dReal _loStop, dReal _hiStop);
+    dJointID addHingeJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis);
+    dJointID addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2, dReal _loStop1, dReal _loStop2, dReal _hiStop1, dReal _hiStop2);
+    dJointID addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2);
+    vec3 getBodyRelVec(dBodyID body, vec3 v);
 };
 
 #endif // BODY_H_INCLUDED
