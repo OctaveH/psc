@@ -177,13 +177,13 @@
 	<cmath>
 	"util.h"
 
-1544385843 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resources.rc
+1544389443 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resources.rc
 	"resource.h"
 	"winresrc.h"
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resource.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resource.h
 
-1553423068 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
+1553426668 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
 	<iostream>
 	"../include/util.h"
 
@@ -200,11 +200,11 @@
 	"common.h"
 	"threading_base.h"
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\common.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\common.h
 	<ode/odeconfig.h>
 	<ode/error.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeconfig.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeconfig.h
 	<stddef.h>
 	<limits.h>
 	<stdio.h>
@@ -216,15 +216,15 @@
 	<ode/precision.h>
 	<stdint.h>
 
-1551878017 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\precision.h
+1551881617 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\precision.h
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\error.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\error.h
 	<ode/odeconfig.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\memory.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\memory.h
 	<ode/odeconfig.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\mass.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\mass.h
 	<ode/common.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\ode\src\error.h
@@ -248,21 +248,22 @@
 	"common.h"
 	<ode/threading.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading.h
 	<ode/odeconfig.h>
 	<time.h>
 
-1553634854 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\util.cpp
+1553816297 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\util.cpp
 	<iostream>
 	<array>
 	"GL/gl.h"
 	"GL/glext.h"
 	"GL/glu.h"
 	<cmath>
-	"util.h"
+	"../include/body.h"
+	"../include/util.h"
 	<ode/ode.h>
 
-1553644623 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
+1553648223 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
 	<iostream>
 	<array>
 	<cmath>
@@ -271,7 +272,7 @@
 	"GL/glu.h"
 	<ode/ode.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\ode.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\ode.h
 	<ode/odeconfig.h>
 	<ode/compatibility.h>
 	<ode/common.h>
@@ -297,80 +298,80 @@
 	<ode/odecpp.h>
 	<ode/odecpp_collision.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\compatibility.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\compatibility.h
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeinit.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeinit.h
 	<ode/common.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\contact.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\contact.h
 	<ode/common.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath.h
 	<ode/common.h>
 	<ode/odemath_legacy.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath_legacy.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath_legacy.h
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix.h
 	<ode/common.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix_coop.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix_coop.h
 	<ode/common.h>
 	<ode/cooperative.h>
 	<ode/threading.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\cooperative.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\cooperative.h
 	<ode/common.h>
 	<ode/threading.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\timer.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\timer.h
 	<ode/odeconfig.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\rotation.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\rotation.h
 	<ode/common.h>
 	<ode/compatibility.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\misc.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\misc.h
 	<ode/common.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\objects.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\objects.h
 	<ode/common.h>
 	<ode/mass.h>
 	<ode/contact.h>
 	<ode/threading.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_space.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_space.h
 	<ode/common.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision.h
 	<ode/common.h>
 	<ode/collision_space.h>
 	<ode/contact.h>
 	"collision_trimesh.h"
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_trimesh.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_trimesh.h
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading_impl.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading_impl.h
 	<ode/odeconfig.h>
 	<ode/threading.h>
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\export-dif.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\export-dif.h
 	<ode/common.h>
 
-1551878017 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\version.h
+1551881617 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\version.h
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp.h
 
-1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp_collision.h
+1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp_collision.h
 
-1553694055 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\body.cpp
+1553817702 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\body.cpp
 	<array>
 	<cmath>
 	<ode/ode.h>
 	"../include/util.h"
 	"../include/body.h"
 
-1553694157 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\body.h
+1553816321 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\body.h
 	<iostream>
 	"../include/util.h"
 
