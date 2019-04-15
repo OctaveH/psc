@@ -1,19 +1,23 @@
 # depslib dependency file v1.0
-1544385843 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\drawstuff\src\resources.rc
+1544389443 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\drawstuff\src\resources.rc
 	"resource.h"
 	"winresrc.h"
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\drawstuff\src\resource.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\drawstuff\src\resource.h
 
-1553775603 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
+1555333821 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
 	<iostream>
 	<ode/ode.h>
 	<drawstuff/drawstuff.h>
 	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<unistd.h>
 	"../include/util.h"
 	"../include/body.h"
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\ode.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\ode.h
 	<ode/odeconfig.h>
 	<ode/compatibility.h>
 	<ode/common.h>
@@ -39,7 +43,7 @@
 	<ode/odecpp.h>
 	<ode/odecpp_collision.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odeconfig.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odeconfig.h
 	<stddef.h>
 	<limits.h>
 	<stdio.h>
@@ -51,95 +55,95 @@
 	<ode/precision.h>
 	<stdint.h>
 
-1551365970 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\precision.h
+1551369570 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\precision.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\compatibility.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\compatibility.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\common.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\common.h
 	<ode/odeconfig.h>
 	<ode/error.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\error.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\error.h
 	<ode/odeconfig.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odeinit.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odeinit.h
 	<ode/common.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\contact.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\contact.h
 	<ode/common.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\memory.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\memory.h
 	<ode/odeconfig.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odemath.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odemath.h
 	<ode/common.h>
 	<ode/odemath_legacy.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odemath_legacy.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odemath_legacy.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\matrix.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\matrix.h
 	<ode/common.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\matrix_coop.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\matrix_coop.h
 	<ode/common.h>
 	<ode/cooperative.h>
 	<ode/threading.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\cooperative.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\cooperative.h
 	<ode/common.h>
 	<ode/threading.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\threading.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\threading.h
 	<ode/odeconfig.h>
 	<time.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\timer.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\timer.h
 	<ode/odeconfig.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\rotation.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\rotation.h
 	<ode/common.h>
 	<ode/compatibility.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\mass.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\mass.h
 	<ode/common.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\misc.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\misc.h
 	<ode/common.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\objects.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\objects.h
 	<ode/common.h>
 	<ode/mass.h>
 	<ode/contact.h>
 	<ode/threading.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\collision_space.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\collision_space.h
 	<ode/common.h>
 
-1551373077 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\collision.h
+1551376677 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\collision.h
 	<ode/common.h>
 	<ode/collision_space.h>
 	<ode/contact.h>
 	"collision_trimesh.h"
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\collision_trimesh.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\collision_trimesh.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\threading_impl.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\threading_impl.h
 	<ode/odeconfig.h>
 	<ode/threading.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\export-dif.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\export-dif.h
 	<ode/common.h>
 
-1551365970 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\version.h
+1551369570 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\version.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odecpp.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odecpp.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odecpp_collision.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\ode\odecpp_collision.h
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\drawstuff\drawstuff.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\drawstuff\drawstuff.h
 	<drawstuff/version.h>
 
-1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\drawstuff\version.h
+1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\include\drawstuff\version.h
 
 1544385843 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\ode\src\util.h
 	"objects.h"
@@ -175,14 +179,15 @@
 	"common.h"
 	<ode/threading.h>
 
-1553701261 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\util.cpp
+1554905319 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\util.cpp
 	<iostream>
 	<array>
 	"GL/gl.h"
 	"GL/glext.h"
 	"GL/glu.h"
 	<cmath>
-	"util.h"
+	"../include/body.h"
+	"../include/util.h"
 	<ode/ode.h>
 
 1544389443 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resources.rc
@@ -191,11 +196,69 @@
 
 1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\drawstuff\src\resource.h
 
-<<<<<<< HEAD
-1553426668 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
-=======
+1553694055 D
+	"../include/body.h"
+	"../include/util.h"
+	<ode/ode.h>
+
 1553423068 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
->>>>>>> RaggDoll
+
+1553694157 gDoll
+	<iostream>
+	"../include/util.h"
+	<iostream>
+	<array>
+	"GL/gl.h"
+	"GL/glext.h"
+	"GL/glu.h"
+	<cmath>
+	<iostream>
+	<array>
+	<cmath>
+	"GL/gl.h"
+	"GL/glext.h"
+	"GL/glu.h"
+	<ode/ode.h>
+	<ode/odeconfig.h>
+	<ode/compatibility.h>
+	<ode/common.h>
+	<ode/odeinit.h>
+	<ode/contact.h>
+	<ode/error.h>
+	<ode/memory.h>
+	<ode/odemath.h>
+	<ode/matrix.h>
+	<ode/matrix_coop.h>
+	<ode/timer.h>
+	<ode/rotation.h>
+	<ode/mass.h>
+	<ode/misc.h>
+	<ode/objects.h>
+	<ode/collision_space.h>
+	<ode/collision.h>
+	<ode/threading.h>
+	<ode/threading_impl.h>
+	<ode/cooperative.h>
+	<ode/export-dif.h>
+	<ode/version.h>
+	<ode/odecpp.h>
+	<ode/odecpp_collision.h>
+	<ode/common.h>
+	<ode/cooperative.h>
+	<ode/threading.h>
+	<ode/common.h>
+	<ode/mass.h>
+	<ode/contact.h>
+	<ode/threading.h>
+	<ode/common.h>
+	<ode/collision_space.h>
+	<ode/contact.h>
+	"collision_trimesh.h"
+	<array>
+	<cmath>
+	<ode/ode.h>
+	"../include/util.h"
+	"../include/body.h"
 	<iostream>
 	"../include/util.h"
 
@@ -264,96 +327,27 @@
 	<ode/odeconfig.h>
 	<time.h>
 
-<<<<<<< HEAD
-1553816297 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\util.cpp
-=======
 1553634854 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\util.cpp
->>>>>>> RaggDoll
-	<iostream>
-	<array>
-	"GL/gl.h"
-	"GL/glext.h"
-	"GL/glu.h"
-	<cmath>
-<<<<<<< HEAD
-	"../include/body.h"
-	"../include/util.h"
-	<ode/ode.h>
 
-1553648223 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
-=======
+1553644623 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
 	"util.h"
 	<ode/ode.h>
 
-1553644623 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\util.h
->>>>>>> RaggDoll
-	<iostream>
-	<array>
-	<cmath>
-	"GL/gl.h"
-	"GL/glext.h"
-	"GL/glu.h"
-	<ode/ode.h>
-
-<<<<<<< HEAD
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\ode.h
-=======
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\ode.h
->>>>>>> RaggDoll
-	<ode/odeconfig.h>
-	<ode/compatibility.h>
-	<ode/common.h>
-	<ode/odeinit.h>
-	<ode/contact.h>
-	<ode/error.h>
-	<ode/memory.h>
-	<ode/odemath.h>
-	<ode/matrix.h>
-	<ode/matrix_coop.h>
-	<ode/timer.h>
-	<ode/rotation.h>
-	<ode/mass.h>
-	<ode/misc.h>
-	<ode/objects.h>
-	<ode/collision_space.h>
-	<ode/collision.h>
-	<ode/threading.h>
-	<ode/threading_impl.h>
-	<ode/cooperative.h>
-	<ode/export-dif.h>
-	<ode/version.h>
-	<ode/odecpp.h>
-	<ode/odecpp_collision.h>
 
-<<<<<<< HEAD
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\compatibility.h
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeinit.h
-	<ode/common.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\contact.h
-	<ode/common.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath.h
-	<ode/common.h>
-	<ode/odemath_legacy.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath_legacy.h
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix.h
-	<ode/common.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix_coop.h
-=======
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\compatibility.h
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odeinit.h
 	<ode/common.h>
+	<ode/common.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\contact.h
 	<ode/common.h>
+	<ode/common.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odemath.h
+	<ode/common.h>
+	<ode/odemath_legacy.h>
 	<ode/common.h>
 	<ode/odemath_legacy.h>
 
@@ -361,92 +355,48 @@
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix.h
 	<ode/common.h>
+	<ode/common.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\matrix_coop.h
->>>>>>> RaggDoll
-	<ode/common.h>
-	<ode/cooperative.h>
-	<ode/threading.h>
 
-<<<<<<< HEAD
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\cooperative.h
-	<ode/common.h>
-	<ode/threading.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\timer.h
-	<ode/odeconfig.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\rotation.h
-	<ode/common.h>
-	<ode/compatibility.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\misc.h
-	<ode/common.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\objects.h
-=======
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\cooperative.h
+	<ode/common.h>
+	<ode/threading.h>
 	<ode/common.h>
 	<ode/threading.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\timer.h
 	<ode/odeconfig.h>
+	<ode/odeconfig.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\rotation.h
+	<ode/common.h>
+	<ode/compatibility.h>
 	<ode/common.h>
 	<ode/compatibility.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\misc.h
 	<ode/common.h>
+	<ode/common.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\objects.h
->>>>>>> RaggDoll
-	<ode/common.h>
-	<ode/mass.h>
-	<ode/contact.h>
-	<ode/threading.h>
 
-<<<<<<< HEAD
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_space.h
-	<ode/common.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision.h
-=======
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_space.h
+	<ode/common.h>
 	<ode/common.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision.h
->>>>>>> RaggDoll
-	<ode/common.h>
-	<ode/collision_space.h>
-	<ode/contact.h>
-	"collision_trimesh.h"
 
-<<<<<<< HEAD
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_trimesh.h
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading_impl.h
-	<ode/odeconfig.h>
-	<ode/threading.h>
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\export-dif.h
-	<ode/common.h>
-
-1551881617 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\version.h
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp.h
-
-1544389443 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp_collision.h
-
-1553817702 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\body.cpp
-=======
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\collision_trimesh.h
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\threading_impl.h
 	<ode/odeconfig.h>
 	<ode/threading.h>
+	<ode/odeconfig.h>
+	<ode/threading.h>
 
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\export-dif.h
+	<ode/common.h>
 	<ode/common.h>
 
 1551878017 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\version.h
@@ -456,22 +406,10 @@
 1544385843 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\include\ode\odecpp_collision.h
 
 1553694055 source:c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\src\body.cpp
->>>>>>> RaggDoll
-	<array>
-	<cmath>
-	<ode/ode.h>
-	"../include/util.h"
-	"../include/body.h"
 
-<<<<<<< HEAD
-1553816321 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\body.h
-=======
 1553694157 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\body.h
->>>>>>> RaggDoll
-	<iostream>
-	"../include/util.h"
 
-1553701261 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\util.h
+1553704861 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\util.h
 	<iostream>
 	<array>
 	<cmath>
@@ -480,14 +418,14 @@
 	"GL/glu.h"
 	<ode/ode.h>
 
-1553818936 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\body.cpp
+1554998703 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\body.cpp
 	<array>
 	<cmath>
 	<ode/ode.h>
 	"../include/util.h"
 	"../include/body.h"
 
-1553732198 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\body.h
+1554905319 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\body.h
 	<iostream>
 	"../include/util.h"
 

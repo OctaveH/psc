@@ -6,6 +6,11 @@
 #include <drawstuff/drawstuff.h>
 #include <unistd.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
 #include "../include/util.h"
 #include "../include/body.h"
 
@@ -84,24 +89,24 @@ void start()
 // potentially colliding.
 static void nearCallback (void *data, dGeomID o1, dGeomID o2)
 {
-   dBodyID b1 = dGeomGetBody(o1);
-   dBodyID b2 = dGeomGetBody(o2);
+    dBodyID b1 = dGeomGetBody(o1);
+    dBodyID b2 = dGeomGetBody(o2);
     if (dAreConnected(b1, b2))
         return;
-   dContact contact;
-   contact.surface.mode = dContactBounce | dContactSoftCFM;
-   // friction parameter
-   contact.surface.mu = 0;
-   // bounce is the amount of "bouncyness".
-   contact.surface.bounce = 0.2;
-   // bounce_vel is the minimum incoming velocity to cause a bounce
-   contact.surface.bounce_vel = 0.1;
-   // constraint force mixing parameter
-   contact.surface.soft_cfm = 0.001;
-   if (int numc = dCollide (o1,o2,1,&contact.geom,sizeof(dContact))) {
-       dJointID c = dJointCreateContact (world,contactgroup,&contact);
-       dJointAttach (c,b1,b2);
-   }
+    dContact contact;
+    contact.surface.mode = dContactBounce | dContactSoftCFM;
+    // friction parameter
+    contact.surface.mu = 500;
+    // bounce is the amount of "bouncyness".
+    contact.surface.bounce = 0.2;
+    // bounce_vel is the minimum incoming velocity to cause a bounce
+    contact.surface.bounce_vel = 0.1;
+    // constraint force mixing parameter
+    contact.surface.soft_cfm = 0.001;
+    if (int numc = dCollide (o1,o2,1,&contact.geom,sizeof(dContact))) {
+        dJointID c = dJointCreateContact (world,contactgroup,&contact);
+        dJointAttach (c,b1,b2);
+    }
 }
 
 static void simLoop (int pause)
@@ -186,6 +191,7 @@ int main(int argc, char **argv)
     std::cout << "171 \n";
     dInitODE();
     std::cout << "173 \n";
+    while(true){
     world = dWorldCreate();
     space = dHashSpaceCreate(0);
     contactgroup = dJointGroupCreate(0);
@@ -205,7 +211,11 @@ int main(int argc, char **argv)
 
     //create a capsule
     createCapsule(&cap, &geom, world, space, density*2, length, radius);
-    dBodySetPosition(cap, 0.0, 1.0, radius);
+
+    srand(time(NULL));
+    dReal x = (((double)rand())/RAND_MAX - 0.5) * 0.4;
+    dReal y = (((double)rand())/RAND_MAX - 0.5) * 0.4;
+    dBodySetPosition(cap, x, y, radius);
     dMatrix3 R;
     dRFromAxisAndAngle(R, 1.0, 1.0, 0.0, 0.01);
     dBodySetRotation(cap, R);
@@ -216,6 +226,8 @@ int main(int argc, char **argv)
     //Window size is 352 x 288 pixels
     //fn is a structure of drawstuff
     dsSimulationLoop(argc, argv, 352*3, 288*3, &fn);
+    //usleep(5000000);
+    }
 
     dWorldDestroy(world); // Destroy the world
     dCloseODE();          // Close ODE

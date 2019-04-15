@@ -25,11 +25,11 @@ const dReal CHEST_W = 0.36; // actually wider, but we want narrower than shoulde
 const dReal LEG_W = 0.28; // between middles of upper legs
 const dReal PELVIS_W = 0.25; // actually wider, but we want smaller than hip width
 
-const vec3 R_SHOULDER_POS = {-SHOULDER_W * 0.5, SHOULDER_H, 0.0};
-const vec3 L_SHOULDER_POS = {SHOULDER_W * 0.5, SHOULDER_H, 0.0};
-const vec3 a1={UPPER_ARM_LEN, 0.0, 0.0};
-const vec3 a2={FORE_ARM_LEN, 0.0, 0.0};
-const vec3 a3={HAND_LEN, 0.0, 0.0};
+const vec3 R_SHOULDER_POS = { 0.0,-SHOULDER_W * 0.5, SHOULDER_H};
+const vec3 L_SHOULDER_POS = { 0.0,SHOULDER_W * 0.5, SHOULDER_H};
+const vec3 a1={ 0.0,UPPER_ARM_LEN, 0.0};
+const vec3 a2={ 0.0,FORE_ARM_LEN, 0.0};
+const vec3 a3={ 0.0,HAND_LEN, 0.0};
 const vec3 R_ELBOW_POS = R_SHOULDER_POS-a1;
 const vec3 L_ELBOW_POS = L_SHOULDER_POS+a1;
 const vec3 R_WRIST_POS = R_ELBOW_POS-a2;
@@ -37,25 +37,25 @@ const vec3 L_WRIST_POS = L_ELBOW_POS+a2;
 const vec3 R_FINGERS_POS = R_WRIST_POS-a3;
 const vec3 L_FINGERS_POS = L_WRIST_POS+a3;
 
-const vec3 R_HIP_POS = {-LEG_W * 0.5, HIP_H, 0.0};
-const vec3 L_HIP_POS = {LEG_W * 0.5, HIP_H, 0.0};
-const vec3 R_KNEE_POS = {-LEG_W * 0.5, KNEE_H, 0.0};
-const vec3 L_KNEE_POS = {LEG_W * 0.5, KNEE_H, 0.0};
-const vec3 R_ANKLE_POS = {-LEG_W * 0.5, ANKLE_H, 0.0};
-const vec3 L_ANKLE_POS = {LEG_W * 0.5, ANKLE_H, 0.0};
-const vec3 a4={0.0, 0.0, HEEL_LEN};
-const vec3 a5={0.0, 0.0, FOOT_LEN};
+const vec3 R_HIP_POS = { 0.0,-LEG_W * 0.5, HIP_H};
+const vec3 L_HIP_POS = { 0.0,LEG_W * 0.5, HIP_H};
+const vec3 R_KNEE_POS = { 0.0,-LEG_W * 0.5, KNEE_H};
+const vec3 L_KNEE_POS = { 0.0,LEG_W * 0.5, KNEE_H};
+const vec3 R_ANKLE_POS = { 0.0,-LEG_W * 0.5, ANKLE_H};
+const vec3 L_ANKLE_POS = { 0.0,LEG_W * 0.5, ANKLE_H};
+const vec3 a4={ HEEL_LEN,0.0, 0.0};
+const vec3 a5={ FOOT_LEN,0.0, 0.0};
 const vec3 R_HEEL_POS = R_ANKLE_POS-a4;
 const vec3 L_HEEL_POS = L_ANKLE_POS-a4;
 const vec3 R_TOES_POS = R_ANKLE_POS+a5;
 const vec3 L_TOES_POS = L_ANKLE_POS+a5;
 
-const vec3 rightAxis = {1.0, 0.0, 0.0};
-const vec3 leftAxis = {-1.0, 0.0, 0.0};
-const vec3 upAxis = {0.0, 1.0, 0.0};
-const vec3 downAxis = {0.0, -1.0, 0.0};
-const vec3 bkwdAxis = {0.0, 0.0, 1.0};
-const vec3 fwdAxis = {0.0, 0.0, -1.0};
+const vec3 rightAxis = { 0.0,1.0, 0.0};
+const vec3 leftAxis = { 0.0,-1.0, 0.0};
+const vec3 upAxis = { 0.0,0.0, 1.0};
+const vec3 downAxis = { 0.0,0.0, -1.0};
+const vec3 bkwdAxis = { 1.0,0.0, 0.0};
+const vec3 fwdAxis = { -1.0,0.0, 0.0};
 
 /*
 probl�me de type: quand est ce qu'on utilise dReal, dMat3, dVector3?
@@ -75,14 +75,14 @@ Faire le headerdile
         density=_density;
         offset=_offset;
 
-		chest = addBody({-CHEST_W * 0.5, CHEST_H, 0.0},{CHEST_W * 0.5, CHEST_H, 0.0}, 0.13);
-		belly = addBody({0.0, CHEST_H - 0.1, 0.0},{0.0, HIP_H + 0.1, 0.0}, 0.125);
+		chest = addBody({ 0.0,-CHEST_W * 0.5, CHEST_H},{ 0.0,CHEST_W * 0.5, CHEST_H}, 0.13);
+		belly = addBody({ 0.0,0.0, CHEST_H - 0.1},{ 0.0,0.0, HIP_H + 0.1}, 0.125);
 		midSpine = addFixedJoint(chest, belly);
-		pelvis = addBody({-PELVIS_W * 0.5, HIP_H, 0.0},{PELVIS_W * 0.5, HIP_H, 0.0}, 0.125);
+		pelvis = addBody({ 0.0,-PELVIS_W * 0.5, HIP_H},{ 0.0,PELVIS_W * 0.5, HIP_H}, 0.125);
 		lowSpine = addFixedJoint(belly, pelvis);
 
-		head = addBody({0.0, BROW_H, 0.0}, {0.0, MOUTH_H, 0.0}, 0.11);
-		neck = addBallJoint(chest, head,{0.0, NECK_H, 0.0});
+		head = addBody({ 0.0,0.0, BROW_H}, { 0.0,0.0, MOUTH_H}, 0.11);
+		neck = addBallJoint(chest, head,{ 0.0,0.0, NECK_H});
 
 		/*self.rightUpperLeg = self.addBody(R_HIP_POS, R_KNEE_POS, 0.11)
 		self.rightHip = self.addUniversalJoint(self.pelvis, self.rightUpperLeg,
@@ -97,7 +97,6 @@ Faire le headerdile
 		rightHip = addUniversalJoint(pelvis, rightUpperLeg,R_HIP_POS, bkwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
 		leftUpperLeg = addBody(L_HIP_POS, L_KNEE_POS, 0.11);
 		leftHip = addUniversalJoint(pelvis, leftUpperLeg,L_HIP_POS, fwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
-
 				/*self.rightLowerLeg = self.addBody(R_KNEE_POS, R_ANKLE_POS, 0.09)
 		self.rightKnee = self.addHingeJoint(self.rightUpperLeg,
 			self.rightLowerLeg, R_KNEE_POS, leftAxis, 0.0, pi * 0.75)
@@ -183,8 +182,8 @@ Faire le headerdile
         dGeomSetBody(geom, body);
 
         vec3 za=unit3(p2-p1);
-        vec3 xa={0.0, 1.0, 0.0};
-        vec3 vec={1.0, 0.0, 0.0};
+        vec3 xa={1.0, 0.0, 0.0};
+        vec3 vec={ 0.0, 1.0, 0.0};
         if (fabs(dot3(vec,za))<0.7) {xa=vec;}
         vec3 ya=cross(za, xa);
         xa=unit3(cross(ya, za));
