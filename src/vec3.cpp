@@ -1,8 +1,8 @@
-#include "vec3.h"
-
 #include <iostream>
 #include <cassert>
 #include <ode/ode.h>
+
+#include "../include/vec3.h"
 
 
 // Empty constructor
@@ -11,15 +11,10 @@ vec3::vec3() {
         vec[i] = 0.0;
 } 
 
-// Constructors based on ODE dVector3 objects
-vec3::vec3(dVector3 _vec) {
+// Constructor based on a dReal array
+vec3::vec3(const dReal *_vec) {
     for(int i=0; i<4; ++i)
         vec[i] = _vec[i];
-}
-
-vec3::vec3(const dVector3& _vec) { 
-    for(int i=0; i<4; ++i)
-        vec[i] = _vec[i]; 
 }
 
 // Constructor based on each component
@@ -54,12 +49,17 @@ vec3 vec3::operator+=(const vec3& v) {
     return { vec[0]+v[0], vec[1]+v[1], vec[2]+v[2] };
 }
 
+vec3 vec3::operator-=(const vec3& v) {
+    return { vec[0]-v[0], vec[1]-v[1], vec[2]-v[2] };
+}
+
+// Norm of the vector
 dReal norm(const vec3 &v) {
     return std::sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
 }
 
-vec3 operator-(const vec3 &v) {
-    return {-v[0], -v[1], -v[2]};
+vec3 vec3::operator-() {
+    return {-vec[0], -vec[1], -vec[2]};
 }
 
 vec3 operator+(const vec3 &u, const vec3 &v) {
@@ -87,7 +87,7 @@ dReal dist3(const vec3 &u, const vec3 &v) {
 }
 
 dReal dot3(const vec3 &u, const vec3 &v) {
-    return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
+    return (u[0]*v[0] + u[1]*v[1] + u[2]*v[2]);
 }
 
 vec3 cross(const vec3 &u, const vec3 &v) {

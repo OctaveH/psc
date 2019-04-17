@@ -2,6 +2,7 @@
 #define CLIMBER_H
 
 #include <ode/ode.h>
+
 #include "vec3.h"
 #include "climber_info.h"
 
@@ -48,7 +49,7 @@ const vec3 ARM_RIGHT_1 = { 0.0, SHOULDER_WIDTH/2, HBODY_2[2] };
 const vec3 ARM_RIGHT_2 = { 0.0, ARM_RIGHT_1[1]+ARM_LENGTH, ARM_RIGHT_1[2] };
 
 const vec3 ARM_LEFT_1 = { 0.0, -SHOULDER_WIDTH/2, HBODY_2[2] };
-const vec3 ARM_LEFT_2 = { 0.0, ARM_RIGHT_1[1]-ARM_LENGTH, ARM_LEFT_1[2] };
+const vec3 ARM_LEFT_2 = { 0.0, ARM_LEFT_1[1]-ARM_LENGTH, ARM_LEFT_1[2] };
 
 // Forearms
 const vec3 FOREARM_RIGHT_1 = { 0.0, ARM_RIGHT_2[1], HBODY_2[2] };
@@ -70,31 +71,38 @@ const vec3 HAND_LEFT_2 = { 0.0, HAND_LEFT_1[1]-HAND_LENGTH, HAND_LEFT_1[2] };
  */
 
 // Neck
-vec3 NECK_POS = HBODY_2 + vec3({ 0.0, 0.0, NECK_LENGTH/2});
+const vec3 NECK_POS = HBODY_2 + vec3({ 0.0, 0.0, NECK_LENGTH/2});
 
 // Hip
-vec3 HIP_RIGHT_POS = THIGH_RIGHT_2;
-vec3 HIP_LEFT_POS = THIGH_LEFT_2;
+const vec3 HIP_RIGHT_POS = THIGH_RIGHT_2;
+const vec3 HIP_LEFT_POS = THIGH_LEFT_2;
 
 // Knees
-vec3 KNEE_RIGHT_POS = LEG_RIGHT_2;
-vec3 KNEE_LEFT_POS = LEG_LEFT_2;
+const vec3 KNEE_RIGHT_POS = LEG_RIGHT_2;
+const vec3 KNEE_LEFT_POS = LEG_LEFT_2;
 
 // Ankles
-vec3 ANKLE_RIGHT_POS = LEG_RIGHT_1;
-vec3 ANKLE_LEFT_POS = LEG_LEFT_1;
+const vec3 ANKLE_RIGHT_POS = LEG_RIGHT_1;
+const vec3 ANKLE_LEFT_POS = LEG_LEFT_1;
 
 // Shoulders
-vec3 SHOULDER_RIGHT_POS = HBODY_2 + vec3({ 0.0, SHOULDER_WIDTH/2, 0.0});
-vec3 SHOULDER_LEFT_POS = HBODY_2 + vec3({ 0.0, -SHOULDER_WIDTH/2, 0.0});
+const vec3 SHOULDER_RIGHT_POS = HBODY_2 + vec3({ 0.0, SHOULDER_WIDTH/2, 0.0});
+const vec3 SHOULDER_LEFT_POS = HBODY_2 + vec3({ 0.0, -SHOULDER_WIDTH/2, 0.0});
 
 // Elbows
-vec3 ELBOW_RIGHT_POS = ARM_RIGHT_2;
-vec3 ELBOW_LEFT_POS = ARM_LEFT_2;
+const vec3 ELBOW_RIGHT_POS = ARM_RIGHT_2;
+const vec3 ELBOW_LEFT_POS = ARM_LEFT_2;
 
 // Wrists
-vec3 WRIST_RIGHT_POS = FOREARM_RIGHT_2;
-vec3 WRIST_LEFT_POS = FOREARM_LEFT_2;
+const vec3 WRIST_RIGHT_POS = FOREARM_RIGHT_2;
+const vec3 WRIST_LEFT_POS = FOREARM_LEFT_2;
+
+// BodyPart struct to store the body and the geoms together
+typedef struct BodyPart {
+    dReal length, radius;
+    dBodyID body;
+    dGeomID geom;
+} BodyPart;
 
 /*
  *  Climber class: provides methods to create and draw a climber, given an ODE world and space.
@@ -104,29 +112,28 @@ class Climber {
         dWorldID world;  // the world in which the climber will be placed
         dSpaceID space;  // the space in which the climber will be placed
         vec3 offset; // the point in which the climber will be placed
-        int bodyc, jointc; // body count and joint count
+        int partc, jointc; // body count and joint count
         dReal density; // the density of the body - TODO: getters and setters
 
-        dBodyID addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal radius, dReal mass);
-        dBodyID addCapsule(const dVector3& p1, const dVector3& p2, dReal radius);
-        dJointID addFixedJoint(dBodyID body1, dBodyID body2);
-        dJointID addBallJoint(dBodyID body1, dBodyID body2, dVector3 anchor);
+        int addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal radius, dReal mass);
+        int addCapsule(const dVector3& p1, const dVector3& p2, dReal radius);
+        dJointID addFixedJoint(int part1, int part2);
+        dJointID addBallJoint(int part1, int part2, const dVector3 anchor);
     
     public:
-        dBodyID bodies[15];   // store body ID's for easy iteration
-        dGeomID geoms[15];    // store geom ID's for easy iteration
+        BodyPart parts[15];   // store body part indformation
         dJointID joints[14];  // store joint ID's for easy iteration
         dReal total_mass;     // the total mass of the climber
 
-        // Body part IDs
-        dBodyID head;
-        dBodyID hbody, lbody;
-        dBodyID arm_right, arm_left;
-        dBodyID forearm_right, forearm_left;
-        dBodyID hand_right, hand_left;
-        dBodyID thigh_right, thigh_left;
-        dBodyID leg_right, leg_left;
-        dBodyID foot_right, foot_left;
+        // Body part indexes
+        int head;
+        int hbody, lbody;
+        int arm_right, arm_left;
+        int forearm_right, forearm_left;
+        int hand_right, hand_left;
+        int thigh_right, thigh_left;
+        int leg_right, leg_left;
+        int foot_right, foot_left;
  
         // Joints IDs
         dJointID spine;
@@ -138,8 +145,8 @@ class Climber {
         dJointID elbow_right, elbow_left;
         dJointID wrist_right, wrist_left;
 
-        Climber(dWorldID _world, dSpaceID _space);
-        void addClimber(dVector3 offset);
+        Climber(dWorldID _world, dSpaceID _space, dVector3 _offset);
+        void draw();
 };
 
 #endif

@@ -13,15 +13,15 @@ class vec3 {
         
         // Constructors
         vec3();
-        vec3(dVector3 _vec);
-        vec3(const dVector3& _vec);
+        vec3(const dReal *vec);
         vec3(dReal vec0, dReal vec1, dReal vec2);
 
         // Operators
         const dReal& operator[](std::size_t index) const; // get at index operator
         dReal& operator[](std::size_t index); // set at index operator
-        vec3 operator-(const vec3& v); // invert vector (multiply each component by -1)
+        vec3 operator-(); // invert vector (multiply each component by -1)
         vec3 operator+=(const vec3& v); // vector addition-assignment
+        vec3 operator-=(const vec3& v); // vector subtraction-assignement 
 };
 
 vec3 operator+(const vec3& u, const vec3& v); // standard (component by component) addition
