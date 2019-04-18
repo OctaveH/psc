@@ -6,6 +6,13 @@
 #include "../include/climber.h"
 #include "../include/climber_info.h"
 
+const vec3 rightAxis = { 0.0, 1.0, 0.0 };
+const vec3 leftAxis = { 0.0, -1.0, 0.0 };
+const vec3 upAxis = { 0.0, 0.0, 1.0 };
+const vec3 downAxis = { 0.0, 0.0, -1.0 };
+const vec3 bkwdAxis = { 1.0, 0.0, 0.0 };
+const vec3 fwdAxis = { -1.0, 0.0, 0.0 };
+
 Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
     world = _world;
     space = _space;
@@ -75,23 +82,33 @@ Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
 
     neck = addBallJoint(hbody, head, NECK_POS.vec);
 
-    hip_right = addBallJoint(thigh_right, lbody, HIP_RIGHT_POS.vec);
-    hip_left = addBallJoint(thigh_left, lbody, HIP_LEFT_POS.vec);
+    hip_right = addUniversalJoint(thigh_right, lbody, HIP_RIGHT_POS.vec, bkwdAxis.vec, rightAxis.vec, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI, 0.75*M_PI);
+    hip_left = addUniversalJoint(thigh_left, lbody, HIP_LEFT_POS.vec, fwdAxis.vec, rightAxis.vec, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI, 0.75*M_PI);
 
-    knee_right = addBallJoint(leg_right, thigh_right, KNEE_RIGHT_POS.vec);
-    knee_left = addBallJoint(leg_left, thigh_left, KNEE_LEFT_POS.vec);
+    knee_right = addHingeJoint(leg_right, thigh_right, KNEE_RIGHT_POS.vec, leftAxis.vec, 0.0, 0.75*M_PI);
+    printf("yay!\n");
+    knee_left = addHingeJoint(leg_left, thigh_left, KNEE_LEFT_POS.vec, leftAxis.vec, 0.0, 0.75*M_PI);
+    printf("yay!\n");
 
-    ankle_right = addBallJoint(foot_right, leg_right, ANKLE_RIGHT_POS.vec);
-    ankle_left = addBallJoint(foot_left, leg_left, ANKLE_LEFT_POS.vec);
+    ankle_right = addHingeJoint(foot_right, leg_right, ANKLE_RIGHT_POS.vec, rightAxis.vec, -0.1*M_PI, 0.05*M_PI);
+    printf("yay!\n");
+    ankle_left = addHingeJoint(foot_left, leg_left, ANKLE_LEFT_POS.vec, rightAxis.vec, -0.1*M_PI, 0.05*M_PI);
+    printf("yay!\n");
 
     shoulder_right = addBallJoint(hbody, arm_right, SHOULDER_RIGHT_POS.vec);
+    printf("yay!\n");
     shoulder_left = addBallJoint(hbody, arm_left, SHOULDER_LEFT_POS.vec);
+    printf("yay!\n");
 
-    elbow_right = addBallJoint(arm_right, forearm_right, ELBOW_RIGHT_POS.vec);
-    elbow_left = addBallJoint(arm_left, forearm_left, ELBOW_LEFT_POS.vec);
+    elbow_right = addHingeJoint(arm_right, forearm_right, ELBOW_RIGHT_POS.vec, downAxis.vec, 0.0, 0.6*M_PI);
+    printf("yay!\n");
+    elbow_left = addHingeJoint(arm_left, forearm_left, ELBOW_LEFT_POS.vec, upAxis.vec, 0.0, 0.6*M_PI);
+    printf("yay!\n");
 
-    wrist_right = addBallJoint(forearm_right, hand_right, WRIST_RIGHT_POS.vec);
-    wrist_left = addBallJoint(forearm_left, hand_left, WRIST_LEFT_POS.vec);
+    wrist_right = addHingeJoint(forearm_right, hand_right, WRIST_RIGHT_POS.vec, fwdAxis.vec, -0.1*M_PI, 0.2*M_PI);
+    printf("yay!\n");
+    wrist_left = addHingeJoint(forearm_left, hand_left, WRIST_LEFT_POS.vec, bkwdAxis.vec, -0.1*M_PI, 0.2*M_PI);
+    printf("yay!\n");
 }
 
 int Climber::addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal radius, dReal mass) {
@@ -229,6 +246,43 @@ dJointID Climber::addBallJoint(int part1, int part2, const dVector3 anchor){
     dJointSetBallAnchor(joint, anchor[0]+offset[0], anchor[1]+offset[1], anchor[2]+offset[2]); // set this joint to ball anchor
 
     joints[jointc++] = joint; // add the joint to the array
+
+    return joint;
+}
+
+dJointID Climber::addHingeJoint(int part1, int part2, const dVector3 anchor, const dVector3 axis,
+                                dReal _loStop, dReal _hiStop) {
+    vec3 hinge_anchor = vec3(anchor) + offset;
+    dJointGroupID joint_group = dJointGroupCreate(0);
+    dJointID joint = dJointCreateHinge(world, joint_group);
+
+    dJointAttach(joint, parts[part1].body, parts[part2].body);
+    dJointSetHingeAnchor(joint, hinge_anchor[0], hinge_anchor[1], hinge_anchor[2]);
+    dJointSetHingeAxis(joint, axis[0], axis[1], axis[2]);
+    dJointSetHingeParam(joint, dParamLoStop, _loStop);
+    dJointSetHingeParam(joint, dParamHiStop, _hiStop);
+
+    joints[jointc++] = joint;
+
+    return joint;
+}
+
+dJointID Climber::addUniversalJoint(int part1, int part2, const dVector3 anchor, const dVector3 axis1,
+    const dVector3 axis2, dReal _loStop1, dReal _hiStop1, dReal _loStop2, dReal _hiStop2) {
+    vec3 universal_anchor = vec3(anchor) + offset;
+    dJointGroupID joint_group = dJointGroupCreate(0);
+    dJointID joint = dJointCreateUniversal(world, joint_group);
+
+    dJointAttach(joint, parts[part1].body, parts[part2].body);
+    dJointSetUniversalAnchor(joint, universal_anchor[0], universal_anchor[1], universal_anchor[2]);
+    dJointSetUniversalAxis1(joint, axis1[0], axis2[1], axis1[2]);
+    dJointSetUniversalAxis2(joint, axis2[0], axis2[1], axis2[2]);
+    dJointSetUniversalParam(joint, dParamLoStop1, _loStop1);
+    dJointSetUniversalParam(joint, dParamLoStop2, _loStop2);
+    dJointSetUniversalParam(joint, dParamHiStop1, _hiStop1);
+    dJointSetUniversalParam(joint, dParamHiStop2, _hiStop2);
+
+    joints[jointc++] = joint;
 
     return joint;
 }

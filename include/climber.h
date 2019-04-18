@@ -119,6 +119,10 @@ class Climber {
         int addCapsule(const dVector3& p1, const dVector3& p2, dReal radius);
         dJointID addFixedJoint(int part1, int part2);
         dJointID addBallJoint(int part1, int part2, const dVector3 anchor);
+        dJointID addHingeJoint(int part1, int part2, const dVector3 anchor, const dVector3 axis,
+            dReal _loStop, dReal _hiStop);
+        dJointID addUniversalJoint(int part1, int part2, const dVector3 anchor, const dVector3 axis1,
+            const dVector3 axis2, dReal _loStop1, dReal _hiStop1, dReal _loStop2, dReal _hiStop2);
     
     public:
         BodyPart parts[15];   // store body part indformation
