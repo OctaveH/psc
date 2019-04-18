@@ -407,8 +407,8 @@ Faire le headerdile
         dJointSetUniversalAxis2(joint, axis2[0], axis2[1], axis2[2]);
         dJointSetUniversalParam(joint, dParamLoStop, _loStop1);
         dJointSetUniversalParam(joint, dParamHiStop, _hiStop1);
-        dJointSetUniversalParam(joint, dParamLoStop1, _loStop1);
-        dJointSetUniversalParam(joint, dParamHiStop1, _hiStop1);
+        dJointSetUniversalParam(joint, dParamLoStop1, _loStop2);
+        dJointSetUniversalParam(joint, dParamHiStop1, _hiStop2);
         joints[j]=joint;
         j++;
         return joint;
