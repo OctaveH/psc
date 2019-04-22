@@ -2,7 +2,7 @@
 
 #include <drawstuff/drawstuff.h>
 
-#include "../include/vec3.h"
+#include "vec3.h"
 #include "../include/climber.h"
 #include "../include/climber_info.h"
 
@@ -19,7 +19,7 @@ Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
 
     // set the offset that will be used to place all parts
     offset = _offset;
-    density = 1.0; // temporary use of homogeneous density
+    density = 1000.0; // temporary use of homogeneous density
 
     // create all body parts
     partc = 0;
@@ -81,34 +81,27 @@ Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
     spine = addFixedJoint(lbody, hbody);
 
     neck = addBallJoint(hbody, head, NECK_POS.vec);
+    neck_motor = addAMotor(hbody, head, NECK_POS.vec);
 
     hip_right = addUniversalJoint(thigh_right, lbody, HIP_RIGHT_POS.vec, bkwdAxis.vec, rightAxis.vec, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI, 0.75*M_PI);
     hip_left = addUniversalJoint(thigh_left, lbody, HIP_LEFT_POS.vec, fwdAxis.vec, rightAxis.vec, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI, 0.75*M_PI);
 
     knee_right = addHingeJoint(leg_right, thigh_right, KNEE_RIGHT_POS.vec, leftAxis.vec, 0.0, 0.75*M_PI);
-    printf("yay!\n");
     knee_left = addHingeJoint(leg_left, thigh_left, KNEE_LEFT_POS.vec, leftAxis.vec, 0.0, 0.75*M_PI);
-    printf("yay!\n");
 
     ankle_right = addHingeJoint(foot_right, leg_right, ANKLE_RIGHT_POS.vec, rightAxis.vec, -0.1*M_PI, 0.05*M_PI);
-    printf("yay!\n");
     ankle_left = addHingeJoint(foot_left, leg_left, ANKLE_LEFT_POS.vec, rightAxis.vec, -0.1*M_PI, 0.05*M_PI);
-    printf("yay!\n");
 
     shoulder_right = addBallJoint(hbody, arm_right, SHOULDER_RIGHT_POS.vec);
-    printf("yay!\n");
+    shoulder_right_motor = addAMotor(hbody, arm_right, SHOULDER_RIGHT_POS.vec);
     shoulder_left = addBallJoint(hbody, arm_left, SHOULDER_LEFT_POS.vec);
-    printf("yay!\n");
+    shoulder_left_motor = addAMotor(hbody, arm_left, SHOULDER_LEFT_POS.vec);
 
     elbow_right = addHingeJoint(arm_right, forearm_right, ELBOW_RIGHT_POS.vec, downAxis.vec, 0.0, 0.6*M_PI);
-    printf("yay!\n");
     elbow_left = addHingeJoint(arm_left, forearm_left, ELBOW_LEFT_POS.vec, upAxis.vec, 0.0, 0.6*M_PI);
-    printf("yay!\n");
 
     wrist_right = addHingeJoint(forearm_right, hand_right, WRIST_RIGHT_POS.vec, fwdAxis.vec, -0.1*M_PI, 0.2*M_PI);
-    printf("yay!\n");
     wrist_left = addHingeJoint(forearm_left, hand_left, WRIST_LEFT_POS.vec, bkwdAxis.vec, -0.1*M_PI, 0.2*M_PI);
-    printf("yay!\n");
 }
 
 int Climber::addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal radius, dReal mass) {
@@ -250,6 +243,20 @@ dJointID Climber::addBallJoint(int part1, int part2, const dVector3 anchor){
     return joint;
 }
 
+dJointID Climber::addAMotor(int part1, int part2, const dVector3 anchor){
+    dJointID motor = dJointCreateAMotor(world, 0); // allocate joint normally
+
+    dJointAttach(motor, parts[part1].body, parts[part2].body); // attach the two bodies with this joint
+    dJointSetAMotorMode(motor, dAMotorUser);
+
+    dJointSetAMotorNumAxes(motor, 3);
+    dJointSetAMotorAxis(motor, 0, 0, fwdAxis[0], fwdAxis[1], fwdAxis[2]);
+    dJointSetAMotorAxis(motor, 1, 0, rightAxis[0], rightAxis[1], rightAxis[2]);
+    dJointSetAMotorAxis(motor, 2, 0, upAxis[0], upAxis[1], upAxis[2]);
+
+    return motor;
+}
+
 dJointID Climber::addHingeJoint(int part1, int part2, const dVector3 anchor, const dVector3 axis,
                                 dReal _loStop, dReal _hiStop) {
     vec3 hinge_anchor = vec3(anchor) + offset;
@@ -297,3 +304,67 @@ void Climber::draw() {
     }
 }
 
+void Climber::setTargetVelocities(dReal *velocities) {
+    int i = 0;
+    
+    // neck
+    dJointSetAMotorParam(neck_motor, dParamVel1, velocities[i++]);
+    dJointSetAMotorParam(neck_motor, dParamVel2, velocities[i++]);
+    dJointSetAMotorParam(neck_motor, dParamVel3, velocities[i++]);
+    dJointSetAMotorParam(neck_motor, dParamFMax1, F_MAX);
+    dJointSetAMotorParam(neck_motor, dParamFMax2, F_MAX);
+    dJointSetAMotorParam(neck_motor, dParamFMax3, F_MAX);
+
+    // hips
+    dJointSetUniversalParam(hip_right, dParamVel1, velocities[i++]);
+    dJointSetUniversalParam(hip_right, dParamVel2, velocities[i++]);
+    dJointSetUniversalParam(hip_right, dParamFMax1, F_MAX);
+    dJointSetUniversalParam(hip_right, dParamFMax2, F_MAX);
+
+    dJointSetUniversalParam(hip_left, dParamVel1, velocities[i++]);
+    dJointSetUniversalParam(hip_left, dParamVel2, velocities[i++]);
+    dJointSetUniversalParam(hip_left, dParamFMax1, F_MAX);
+    dJointSetUniversalParam(hip_left, dParamFMax2, F_MAX);
+
+    // knees
+    dJointSetHingeParam(knee_right, dParamVel, velocities[i++]);
+    dJointSetHingeParam(knee_right, dParamFMax, F_MAX);
+
+    dJointSetHingeParam(knee_left, dParamVel, velocities[i++]);
+    dJointSetHingeParam(knee_left, dParamFMax, F_MAX);
+
+    // ankles
+    dJointSetHingeParam(ankle_right, dParamVel, velocities[i++]);
+    dJointSetHingeParam(ankle_right, dParamFMax, F_MAX);
+
+    dJointSetHingeParam(ankle_left, dParamVel, velocities[i++]);
+    dJointSetHingeParam(ankle_left, dParamFMax, F_MAX);
+
+    // shoulders
+    dJointSetAMotorParam(shoulder_right_motor, dParamVel1, velocities[i++]);
+    dJointSetAMotorParam(shoulder_right_motor, dParamVel2, velocities[i++]);
+    dJointSetAMotorParam(shoulder_right_motor, dParamVel3, velocities[i++]);
+    dJointSetAMotorParam(shoulder_right_motor, dParamFMax1, F_MAX);
+    dJointSetAMotorParam(shoulder_right_motor, dParamFMax2, F_MAX);
+    dJointSetAMotorParam(shoulder_right_motor, dParamFMax3, F_MAX);
+
+    dJointSetAMotorParam(shoulder_left_motor, dParamVel1, velocities[i++]);
+    dJointSetAMotorParam(shoulder_left_motor, dParamVel2, velocities[i++]);
+    dJointSetAMotorParam(shoulder_left_motor, dParamVel3, velocities[i++]);
+    dJointSetAMotorParam(shoulder_left_motor, dParamFMax1, F_MAX);
+    dJointSetAMotorParam(shoulder_left_motor, dParamFMax2, F_MAX);
+    dJointSetAMotorParam(shoulder_left_motor, dParamFMax3, F_MAX);
+
+    // elbows
+    dJointSetHingeParam(elbow_right, dParamVel, velocities[i++]);
+    dJointSetHingeParam(elbow_right, dParamFMax, F_MAX);
+
+    dJointSetHingeParam(elbow_left, dParamVel, velocities[i++]);
+    dJointSetHingeParam(elbow_left, dParamFMax, F_MAX);
+
+    // wrists 
+    dJointSetHingeParam(wrist_right, dParamVel, velocities[i++]);
+    dJointSetHingeParam(wrist_right, dParamFMax, F_MAX);
+
+    dJointSetHingeParam(wrist_left, dParamVel, velocities[i++]);
+}

@@ -9,6 +9,9 @@ static dSpaceID space;
 static dJointGroupID contactgroup;
 static Climber* climberptr;
 
+dReal velocities[25];
+dReal t = 0.0;
+
 // this is called by dSpaceCollide when two objects in space are
 // potentially colliding.
 static void nearCallback (void *data, dGeomID o1, dGeomID o2)
@@ -20,9 +23,9 @@ static void nearCallback (void *data, dGeomID o1, dGeomID o2)
    dContact contact;
    contact.surface.mode = dContactBounce | dContactSoftCFM;
    // friction parameter
-   contact.surface.mu = 0;
+   contact.surface.mu = 0.5;
    // bounce is the amount of "bouncyness".
-   contact.surface.bounce = 0.2;
+   contact.surface.bounce = 0;
    // bounce_vel is the minimum incoming velocity to cause a bounce
    contact.surface.bounce_vel = 0.1;
    // constraint force mixing parameter
@@ -38,6 +41,11 @@ static void start() {
    static float xyz[3] = {2.0f,-2.0f,2.0f};
    static float hpr[3] = {140.000f,-17.0000f,0.0000f};
    dsSetViewpoint(xyz, hpr);
+
+   for (int i = 0; i < 25; ++i) {
+      velocities[i] = 0;
+   }
+   velocities[0] = 1.0;
 }
 
 // simulation loop
@@ -53,6 +61,10 @@ static void simLoop(int pause) {
 
    // redraw sphere at new location
    climberptr->draw();
+
+   velocities[8] = std::sin(t);
+   t += 0.01;
+   climberptr->setTargetVelocities(velocities);
 }
 
 int main (int argc, char **argv) {
@@ -79,7 +91,7 @@ int main (int argc, char **argv) {
    contactgroup = dJointGroupCreate(0);
 
    // create climber
-   dVector3 offset = { 0, 0, 2};
+   dVector3 offset = { 0, 0, 0};
    climberptr = new Climber(world, space, offset);
 
    // run simulation
