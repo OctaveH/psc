@@ -5,13 +5,10 @@
 
 1544389443 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\drawstuff\src\resource.h
 
-1556023379 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
+1556050418 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\human_modelling.cpp
 	<iostream>
 	<ode/ode.h>
 	<drawstuff/drawstuff.h>
-	<unistd.h>
-	<stdio.h>
-	<stdlib.h>
 	<time.h>
 	<unistd.h>
 	"../include/save_simu.h"
@@ -180,7 +177,7 @@
 	"common.h"
 	<ode/threading.h>
 
-1554905319 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\util.cpp
+1556046999 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\util.cpp
 	<iostream>
 	<array>
 	"GL/gl.h"
@@ -410,7 +407,7 @@
 
 1553694157 c:\users\julie\documents\polytechnique\2a\psc\c++\ode-0.16\myprog\human_modelling\include\body.h
 
-1553704861 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\util.h
+1556028313 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\util.h
 	<iostream>
 	<array>
 	<cmath>
@@ -419,22 +416,20 @@
 	"GL/glu.h"
 	<ode/ode.h>
 
-1555947024 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\body.cpp
-	<array>
-	<cmath>
-	<ode/ode.h>
+1556050241 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\body.cpp
+	<drawstuff/drawstuff.h>
 	"../include/util.h"
 	"../include/body.h"
 
-1554905319 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\body.h
+1556050479 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\body.h
 	<iostream>
 	"../include/util.h"
 
-1556023379 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\save_simu.cpp
+1556028313 source:c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\src\save_simu.cpp
 	<iostream>
 	<algorithm>
 	"../include/save_simu.h"
 
-1556023379 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\save_simu.h
+1556028313 c:\users\octav\desktop\documents\cours et stages\psc\ode-0.16\myprog\human_modelling\include\save_simu.h
 	"body.h"
 
