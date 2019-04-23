@@ -5,12 +5,12 @@
 #include <ode/ode.h>
 #include <drawstuff/drawstuff.h>
 #include <unistd.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
 
+#include "../include/save_simu.h"
 #include "../include/util.h"
 #include "../include/body.h"
 
@@ -18,6 +18,12 @@ static dWorldID world;
 static dSpaceID space;
 
 static Ragdoll corpse;
+
+static save_simu sauvegarde;
+
+static bool to_load = false;
+static bool to_save = true;
+static int frame_count = 0;
 
 const dReal density = 1000.0;
 const vec3 offset = {0.0, 0.0, 1.0};
@@ -32,56 +38,12 @@ static dJointGroupID contactgroup;
 //static int flag = 0;
 dsFunctions fn;
 
-void test1() // test partie 1 opération sur les vecteurs
-{
-    num_type n= 1.5;
-    vec3 u={1, 1, 1};
-    vec3 v={2, 3, 4};
-    mat3 A={u,u,v};
-
-    std :: cout << "u=" <<u << ", v=" << v <<", n=" << n << std::endl;
-
-    vec3 a=u+v;
-    vec3 b=u-v;
-    vec3 c=-u;
-    vec3 d=n*v;
-    vec3 e=v/n;
-    vec3 f=unit3(u);
-    vec3 g=cross(u, v);
-    vec3 h=project3(u, v);
-    vec3 i=A*v;
-    vec3 j=zaxis(A);
-
-    num_type s=sign(n);
-    num_type m=norm(u);
-    num_type t=dot3(u, v);
-    num_type z=angle3(u, v);
-
-    mat3 B=transpose(A);
-    mat3 C=rotMatrix(u, n);
-
-    mat4 W=makeOpenGLMatrix(A, v);
-
-    std::cout << "test addition u+v: " << a << std::endl;
-    std::cout << "test soustraction u-v: " << b << std::endl;
-    std::cout << "test opposé -u: " << c << std::endl;
-    std::cout << "test multiplication par un scalaire n*v: " << d << std::endl;
-    std::cout << "test division par un scalaire v/n: " << e << std::endl;
-    std::cout << "test unit3(u): " << f << std::endl;
-    std::cout << "test cross(u,v): " << g << std::endl;
-    std::cout << "test project3(u,v): " << h << std::endl;
-    std::cout << "test A*v, multiplication par une matrice: " << i << std::endl;
-    std::cout << "test zaxis(A): " << j << std::endl;
-
-    std::cout << "sign(n): " << s << ",  norm(u): " << m << ", dot3(u,v): " << t << ", angle3(u,v): " << z << std::endl;
-}
-
 //start function
 void start()
 {
     //Set a camera
-    static float xyz[3] = {3.0, 3.0, 2.5};
-    static float hpr[3] = {215.0, -35.0, 0.0};
+    static float xyz[3] = {2.5, 2.5, 2.5};
+    static float hpr[3] = {225.0, -25.0, 0.0};
     dsSetViewpoint(xyz, hpr);
 }
 
@@ -119,6 +81,16 @@ static void simLoop (int pause)
     dWorldStep(world, 0.005); // Step a simulation world, time step is 0.05
 
     dJointGroupEmpty(contactgroup);
+    if (to_save)
+    {
+        to_save = false;
+        sauvegarde.save();
+    }
+    if (to_load)
+    {
+        to_load = false;
+        sauvegarde.load();
+    }
 
     dsSetColor(0.5, 0.2, 0.2);
     for (int i = 0; i < NB_PARTS; i++)
@@ -145,12 +117,15 @@ static void simLoop (int pause)
             dsDrawBoxD(posi,RI,ss);
         }
     }
+
     pos = dBodyGetPosition(cap);
     R = dBodyGetRotation(cap);
     dsDrawCapsuleD(pos, R, length, radius);
-//    int a = 0;
-//    while (a == 0)
+//Pour ajouter un temps de pause :
+//    char a = ' ';
+//    while (a == ' ' && frame_count % 10 == 0)
 //        std::cin >> a;
+//    frame_count++;
 }
 
 //create a capsule body and corresponding geom.
@@ -165,32 +140,36 @@ void createCapsule(dBodyID* body, dGeomID* geom, dWorldID world, dSpaceID space,
 	dMassSetCapsule(&M, density, 3, radius, length);
 	dBodySetMass(*body, &M);
 
-	// Je sais pas comment écrire les trois lignes, "set parameters for drawing the body
-
-
 	// create a capsule geom for collision detection
 	*geom = dCreateCapsule(space, radius, length);
 	dGeomSetBody(*geom, *body);
 }
 
+void command(int cmd)
+{
+    switch (cmd)
+    {
+    case 's': // sauvegarder l'état actuel de la simulation
+        to_save = true;
+        break;
+    case 'l': // charger l'état sauvegardé
+        to_load = true;
+        break;
+    }
+}
+
 int main(int argc, char **argv)
 {
-    std::cout << "begin main ...\n";
-    //dReal x0 = 0.0, y0 = 0.0, z0 = 2.0;
-    //dMass m1;
-
     //for drawstuff
     dsFunctions fn;
     fn.version = DS_VERSION; //the version of drawstuff
     fn.start = &start;
     fn.step = &simLoop;
-    fn.command = NULL; //no command function for keyboard
+    fn.command = &command;
     fn.stop = NULL; //no stop function
     fn.path_to_textures = "../../drawstuff/textures";
 
-    std::cout << "171 \n";
     dInitODE();
-    std::cout << "173 \n";
     while(true){
     world = dWorldCreate();
     space = dHashSpaceCreate(0);
@@ -201,7 +180,17 @@ int main(int argc, char **argv)
 
     corpse = Ragdoll(world, space, density, offset);
 
-    // set the initial simulation loo parameters
+    // Configuration de la sauvegarde
+    dBodyID bodies[NB_PARTS];
+    dGeomID geoms[NB_PARTS];
+    for (int i = 0; i < NB_PARTS; i++)
+    {
+        bodies[i] = corpse.body_parts[i].body;
+        geoms[i] = corpse.body_parts[i].geom;
+    }
+    sauvegarde = save_simu(NB_PARTS, bodies, geoms);
+
+    // set the initial simulation loop parameters
     const int fps = 60;
     const dReal dt = 1.0 / fps;
     const int stepsPerFrame = 2;

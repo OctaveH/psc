@@ -3,9 +3,9 @@
 #include <cmath>
 #include <ode/ode.h>
 #include "../include/util.h"
-#include "../include/body.h"  //pb avec le include
+#include "../include/body.h"
 
-const dReal UPPER_ARM_LEN=0.30; //dReal ou num_type?
+const dReal UPPER_ARM_LEN=0.30;
 const dReal FORE_ARM_LEN = 0.25;
 const dReal HAND_LEN = 0.13; // wrist to mid-fingers only
 const dReal FOOT_LEN = 0.18; // ankles to base of ball of foot only
@@ -94,7 +94,7 @@ Faire le headerdile
 			0.75 * pi)*/
 
 		rightUpperLeg = addBody(R_HIP_POS, R_KNEE_POS, 0.11);
-		rightHip = addUniversalJoint(pelvis, rightUpperLeg,R_HIP_POS, bkwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
+		rightHip = addUniversalJoint(pelvis, rightUpperLeg,R_HIP_POS, fwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
 		leftUpperLeg = addBody(L_HIP_POS, L_KNEE_POS, 0.11);
 		leftHip = addUniversalJoint(pelvis, leftUpperLeg,L_HIP_POS, fwdAxis, rightAxis, -0.1*M_PI, 0.3*M_PI, -0.15*M_PI,0.75*M_PI);
 				/*self.rightLowerLeg = self.addBody(R_KNEE_POS, R_ANKLE_POS, 0.09)
@@ -182,8 +182,8 @@ Faire le headerdile
         dGeomSetBody(geom, body);
 
         vec3 za=unit3(p2-p1);
-        vec3 xa={1.0, 0.0, 0.0};
-        vec3 vec={ 0.0, 1.0, 0.0};
+        vec3 xa={0.0, 0.0, 1.0};
+        vec3 vec={0.0, 1.0, 0.0};
         if (fabs(dot3(vec,za))<0.7) {xa=vec;}
         vec3 ya=cross(za, xa);
         xa=unit3(cross(ya, za));
@@ -195,14 +195,12 @@ Faire le headerdile
         //std::cout << xa[0] << " " << xa[1] " " << xa[1] << "\n" << std::endl;
 		dBodySetRotation(body, rot);
 		totalMass+=m.mass;
-		std::cout << "l. 139 rang : " << b;
 		body_parts[b].body = body;
 		body_parts[b].geom = geom;
 		body_parts[b].length = cyllen;
 		body_parts[b].radius = radius;
 //		geoms[b]=geom;
 //		bodies[b]=body;
-		std::cout << " ok" << std::endl;
 		b++;
 		return body;
 
@@ -397,7 +395,7 @@ Faire le headerdile
         joint.style = "univ"
 		self.joints.append(joint)
 		return joint*/
-    dJointID Ragdoll::addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2, dReal _loStop1, dReal _loStop2, dReal _hiStop1, dReal _hiStop2){
+    dJointID Ragdoll::addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2, dReal _loStop1, dReal _hiStop1, dReal _loStop2, dReal _hiStop2){
         anchor=anchor+offset;
         dJointGroupID group_joint =dJointGroupCreate (0);
         dJointID joint=dJointCreateUniversal(world, group_joint);
@@ -405,10 +403,10 @@ Faire le headerdile
         dJointSetUniversalAnchor(joint, anchor[0], anchor[1], anchor[2]);
         dJointSetUniversalAxis1(joint, axis1[0], axis1[1], axis1[2]);
         dJointSetUniversalAxis2(joint, axis2[0], axis2[1], axis2[2]);
-        dJointSetUniversalParam(joint, dParamLoStop, _loStop1);
-        dJointSetUniversalParam(joint, dParamHiStop, _hiStop1);
-        dJointSetUniversalParam(joint, dParamLoStop1, _loStop2);
-        dJointSetUniversalParam(joint, dParamHiStop1, _hiStop2);
+        dJointSetUniversalParam(joint, dParamLoStop1, _loStop1);
+        dJointSetUniversalParam(joint, dParamHiStop1, _hiStop1);
+        dJointSetUniversalParam(joint, dParamLoStop2, _loStop2);
+        dJointSetUniversalParam(joint, dParamHiStop2, _hiStop2);
         joints[j]=joint;
         j++;
         return joint;
