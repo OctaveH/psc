@@ -5,6 +5,7 @@
 
 #include "vec3.h"
 #include "climber_info.h"
+#include "wall.h"
 
 /*
  *  Body part positions for a T-pose facing the +x direction
@@ -127,9 +128,9 @@ class Climber {
             dReal _loStop, dReal _hiStop);
         dJointID addUniversalJoint(int part1, int part2, const dVector3 anchor, const dVector3 axis1,
             const dVector3 axis2, dReal _loStop1, dReal _hiStop1, dReal _loStop2, dReal _hiStop2);
-    
+
     public:
-        BodyPart parts[15];   // store body part indformation
+        BodyPart parts[15];   // store body part information
         dJointID joints[14];  // store joint ID's for easy iteration
         dReal total_mass;     // the total mass of the climber
 
@@ -142,7 +143,7 @@ class Climber {
         int thigh_right, thigh_left;
         int leg_right, leg_left;
         int foot_right, foot_left;
- 
+
         // Joints IDs
         dJointID spine;
         dJointID neck;
@@ -158,6 +159,9 @@ class Climber {
         Climber(dWorldID _world, dSpaceID _space, dVector3 _offset);
         void draw();
         void setTargetVelocities(dReal *velocities);
+        float cost(ClimbingWall* wallptr, Stance target_stance);
 };
+
+vec3 pos_end_bodypart(dBodyID body, dJointID joint);
 
 #endif

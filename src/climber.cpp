@@ -2,9 +2,20 @@
 
 #include <drawstuff/drawstuff.h>
 
-#include "vec3.h"
+#include "../include/vec3.h"
 #include "../include/climber.h"
 #include "../include/climber_info.h"
+
+// Cost function constants
+#define K_DIR 0.5 // 1
+#define K_SIGMA 0.0025 // meters
+#define K_VEL 100 // m/s^2
+#define K_POS_FREE 0.087 // rad
+#define K_POS_CLIMB 0.785 // rad
+#define K_COM 20 // meters
+#define K_FORCE 250 // Newtons
+#define R_H 0.125 // meters
+#define THETA_0 2.09 // rad
 
 const vec3 rightAxis = { 0.0, 1.0, 0.0 };
 const vec3 leftAxis = { 0.0, -1.0, 0.0 };
@@ -23,6 +34,7 @@ Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
 
     // create all body parts
     partc = 0;
+    jointc = 0;
 
     head = addCapsule(HEAD_1.vec, HEAD_2.vec, HEAD_RADIUS);
     parts[head].length = HEAD_LENGTH;
@@ -33,7 +45,7 @@ Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
     parts[hbody].radius = HBODY_RADIUS;
     lbody = addCapsule(LBODY_1.vec, LBODY_2.vec, LBODY_RADIUS);
     parts[lbody].length = LBODY_LENGTH;
-    parts[lbody].radius = LBODY_RADIUS; 
+    parts[lbody].radius = LBODY_RADIUS;
 
     arm_right = addCapsule(ARM_RIGHT_1.vec, ARM_RIGHT_2.vec, ARM_RADIUS);
     parts[arm_right].length = ARM_LENGTH;
@@ -72,7 +84,7 @@ Climber::Climber(dWorldID _world, dSpaceID _space, dVector3 _offset) {
 
     foot_right = addCapsule(FOOT_RIGHT_1.vec, FOOT_RIGHT_2.vec, FOOT_RADIUS);
     parts[foot_right].length = FOOT_LENGTH;
-    parts[foot_right].radius = FOOT_RADIUS; 
+    parts[foot_right].radius = FOOT_RADIUS;
     foot_left = addCapsule(FOOT_LEFT_1.vec, FOOT_LEFT_2.vec, FOOT_RADIUS);
     parts[foot_left].length = FOOT_LENGTH;
     parts[foot_left].radius = FOOT_RADIUS;
@@ -114,7 +126,7 @@ int Climber::addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal ra
 
     // create capsule
 	dBodyID capsule = dBodyCreate(world);
-	
+
     // create capsule mass and bind it to the body
     dMass m;
 	dMassSetZero(&m);
@@ -132,7 +144,7 @@ int Climber::addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal ra
 
     // determine the capsule's rotation from its pos1---pos2 axis
     vec3 xa, ya, za; // x, y and z axis
-    
+
     za = unit3(pos2-pos1); // set the z axis to the capsule's axi
 
     if(abs(dot3({1.0, 0.0, 0.0}, za)) < 0.7)
@@ -145,9 +157,9 @@ int Climber::addCapsuleWithMass(const dVector3& p1, const dVector3& p2, dReal ra
 
     dReal rot[12]={ xa[0], ya[0], za[0],
                     xa[1], ya[1], za[1],
-                    xa[2], ya[2], za[2], 
+                    xa[2], ya[2], za[2],
                       0.0,   0.0,   0.0 }; // create the rotation matrix
-	
+
     // set the capsule's rotation
     dBodySetRotation(capsule, rot);
 
@@ -168,7 +180,7 @@ int Climber::addCapsule(const dVector3& p1, const dVector3& p2, dReal radius) {
 
     // create capsule
 	dBodyID capsule = dBodyCreate(world);
-	
+
     // create capsule mass and bind it to the body
     dMass m;
 	dMassSetZero(&m);
@@ -186,7 +198,7 @@ int Climber::addCapsule(const dVector3& p1, const dVector3& p2, dReal radius) {
 
     // determine the capsule's rotation from its pos1---pos2 axis
     vec3 xa, ya, za; // x, y and z axis
-    
+
     za = unit3(pos2-pos1); // set the z axis to the capsule's axi
 
     if(fabs(dot3({1.0, 0.0, 0.0}, za)) < 0.7)
@@ -200,15 +212,15 @@ int Climber::addCapsule(const dVector3& p1, const dVector3& p2, dReal radius) {
     //printf("xa: %f %f %f\n", xa[0], xa[1], xa[2]);
     //printf("ya: %f %f %f\n", ya[0], ya[1], ya[2]);
     //printf("za: %f %f %f\n", za[0], za[1], za[2]);
-   
+
     dMatrix3 rot;
     dRSetIdentity(rot);
     dRFrom2Axes(rot, xa[0], xa[1], xa[2], ya[0], ya[1], ya[2]);
-    
+
     /*
     dMatrix3 rot ={ xa[0], ya[0], za[0],
                     xa[1], ya[1], za[1],
-                    xa[2], ya[2], za[2], 
+                    xa[2], ya[2], za[2],
                       0.0,   0.0,   0.0 }; // create the rotation matrix
 	*/
 
@@ -223,10 +235,10 @@ int Climber::addCapsule(const dVector3& p1, const dVector3& p2, dReal radius) {
 
 dJointID Climber::addFixedJoint(int part1, int part2) {
     dJointID joint = dJointCreateFixed(world, 0); // allocate joint normally
-        
+
     dJointAttach(joint, parts[part1].body, parts[part2].body); // attach the two bodies with this joint
     dJointSetFixed(joint); // set the joint to fixed
-        
+
     joints[jointc++]=joint; // add to joint array
 
     return joint;
@@ -299,14 +311,14 @@ void Climber::draw() {
     for(int i=0; i<15; ++i) {
         pos = dBodyGetPosition(parts[i].body);
         R = dBodyGetRotation(parts[i].body);
-        
-        dsDrawCapsule(pos, R, parts[i].length, parts[i].radius);
+
+        dsDrawCapsuleD(pos, R, parts[i].length, parts[i].radius);
     }
 }
 
 void Climber::setTargetVelocities(dReal *velocities) {
     int i = 0;
-    
+
     // neck
     dJointSetAMotorParam(neck_motor, dParamVel1, velocities[i++]);
     dJointSetAMotorParam(neck_motor, dParamVel2, velocities[i++]);
@@ -362,9 +374,75 @@ void Climber::setTargetVelocities(dReal *velocities) {
     dJointSetHingeParam(elbow_left, dParamVel, velocities[i++]);
     dJointSetHingeParam(elbow_left, dParamFMax, F_MAX);
 
-    // wrists 
+    // wrists
     dJointSetHingeParam(wrist_right, dParamVel, velocities[i++]);
     dJointSetHingeParam(wrist_right, dParamFMax, F_MAX);
 
     dJointSetHingeParam(wrist_left, dParamVel, velocities[i++]);
+}
+
+float Climber::cost(ClimbingWall* wallptr, Stance target_stance)
+{
+    float c = 0;
+
+    // 1. Distance to the target stance
+    float square_dist = 0;
+    if (target_stance.lh_hold != -1)
+    {
+        vec3 pos = pos_end_bodypart(parts[hand_left].body, wrist_left);
+        square_dist += std::pow(dist3(wallptr->holds[target_stance.lh_hold],pos), 2);
+    }
+    if (target_stance.rh_hold != -1)
+    {
+        vec3 pos = pos_end_bodypart(parts[hand_right].body, wrist_right);
+        square_dist += std::pow(dist3(wallptr->holds[target_stance.rh_hold],pos), 2);
+    }
+    if (target_stance.lf_hold != -1)
+    {
+        vec3 pos = pos_end_bodypart(parts[foot_left].body, ankle_left);
+        square_dist += std::pow(dist3(wallptr->holds[target_stance.lf_hold],pos), 2);
+    }
+    if (target_stance.rf_hold != -1)
+    {
+        vec3 pos = pos_end_bodypart(parts[foot_right].body, ankle_right);
+        square_dist += std::pow(dist3(wallptr->holds[target_stance.rf_hold],pos), 2);
+    }
+    c += square_dist / (K_SIGMA*K_SIGMA);
+
+    // 2. Distance to the wall
+    vec3 barycentre = {0,0,0};
+    dReal mass = 0.0;
+    for(int i = 0; i < 15; i++)
+    {
+        const dReal* pos = dBodyGetPosition(parts[i].body);
+        dReal mass_part = parts[i].length * parts[i].radius * parts[i].radius;
+        barycentre = barycentre + mass_part * (vec3){pos[0], pos[1], pos[2]};
+        mass += mass_part;
+    }
+    barycentre = barycentre / mass;
+    float distance = dot3(barycentre - wallptr->position, wallptr->orientation) - wallptr->thickness / 2;
+    c += distance*distance / (K_COM*K_COM);
+
+    // 3. Distance to the prefered posture
+    // TODO
+
+    // 4. Facing toward the wall
+    // TODO
+
+    // 5. Members velocities
+    // TODO
+
+    // 6. Torques and forces
+    // TODO
+
+    return c;
+}
+
+vec3 pos_end_bodypart(dBodyID body, dJointID joint)
+{
+    const dReal* m = dBodyGetPosition(body); // position of the center of the body part
+    dVector3 j; // position of the joint
+    dJointGetHingeAnchor2(joint, j);
+    vec3 member_end_pos = {2*m[0]-j[0],2*m[1]-j[1],2*m[2]-j[2]};
+    return member_end_pos;
 }

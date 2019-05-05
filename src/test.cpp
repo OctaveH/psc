@@ -8,6 +8,7 @@ static dWorldID world;
 static dSpaceID space;
 static dJointGroupID contactgroup;
 static Climber* climberptr;
+static ClimbingWall* wallptr;
 
 dReal velocities[25];
 dReal t = 0.0;
@@ -52,19 +53,30 @@ static void start() {
 static void simLoop(int pause) {
    // find collisions and add contact joints
    dSpaceCollide(space, 0, &nearCallback);
-   
+
    // step the simulation
-   dWorldQuickStep(world, 0.01);  
-   
+   dWorldQuickStep(world, 0.01);
+
    // remove all contact joints
    dJointGroupEmpty(contactgroup);
 
    // redraw sphere at new location
    climberptr->draw();
+   wallptr->draw();
 
    velocities[8] = std::sin(t);
    t += 0.01;
    climberptr->setTargetVelocities(velocities);
+}
+
+void command(int cmd)
+{
+    switch (cmd)
+    {
+    case 'c':
+        printf("cost = %f\n",climberptr->cost(wallptr, {0,0,0,0}));
+        break;
+    }
 }
 
 int main (int argc, char **argv) {
@@ -74,8 +86,9 @@ int main (int argc, char **argv) {
    fn.start = &start;
    fn.step = &simLoop;
    fn.stop = 0;
-   fn.command = 0;
-   fn.path_to_textures = "./textures";
+   fn.command = &command;
+   //fn.path_to_textures = "./textures";
+   fn.path_to_textures = "../../drawstuff/textures";
 
    dInitODE ();
 
@@ -85,7 +98,7 @@ int main (int argc, char **argv) {
    dWorldSetGravity(world, 0, 0, -9.81);
    dWorldSetERP(world, 0.1);
    dWorldSetCFM(world, 1e-4);
-   
+
    // create floor
    dCreatePlane(space, 0, 0, 1, 0);
    contactgroup = dJointGroupCreate(0);
@@ -94,14 +107,17 @@ int main (int argc, char **argv) {
    dVector3 offset = { 0, 0, 0};
    climberptr = new Climber(world, space, offset);
 
+   // create climbing wall
+   wallptr = new ClimbingWall(world, space);
+
    // run simulation
    dsSimulationLoop(argc, argv, 640, 480, &fn);
-   
+
    // clean up
    dJointGroupDestroy(contactgroup);
    dSpaceDestroy(space);
    dWorldDestroy(world);
    dCloseODE();
-   
+
    return 0;
 }
