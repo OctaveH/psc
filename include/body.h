@@ -2,6 +2,7 @@
 #define BODY_H_INCLUDED
 #include <iostream>
 #include "../include/util.h"
+#include "../include/wall.h"
 
 typedef struct {
   dBodyID body;
@@ -32,6 +33,7 @@ public:
 
 	dBodyID head;
 	dJointID neck;
+	dJointID neckMotor;
 
 	dBodyID rightUpperLeg;
 	dJointID rightHip;
@@ -50,8 +52,10 @@ public:
 
 	dBodyID rightUpperArm;
 	dJointID rightShoulder;
+	dJointID rightShoulderMotor;
 	dBodyID leftUpperArm;
 	dJointID leftShoulder;
+	dJointID leftShoulderMotor;
 
 	dBodyID rightForeArm;
 	dJointID rightElbow;
@@ -67,11 +71,17 @@ public:
     dBodyID addBody(vec3 p1,vec3 p2,num_type radius);
     dJointID addFixedJoint(dBodyID body1, dBodyID body2);
     dJointID addBallJoint(dBodyID body1, dBodyID body2, vec3 anchor);
+    dJointID addAMotor(dBodyID body1, dBodyID body2);
     dJointID addHingeJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis, dReal _loStop, dReal _hiStop);
     dJointID addHingeJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis);
     dJointID addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2, dReal _loStop1, dReal _loStop2, dReal _hiStop1, dReal _hiStop2);
     dJointID addUniversalJoint(dBodyID body1, dBodyID body2, vec3 anchor, vec3 axis1, vec3 axis2);
     void draw();
+    void setTargetAngles(dReal* angles, dReal error);
+
+    float cost(ClimbingWall* wallptr, Stance target_stance);
 };
+
+vec3 pos_end_bodypart(dBodyID body, dJointID joint);
 
 #endif // BODY_H_INCLUDED

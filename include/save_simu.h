@@ -5,9 +5,8 @@
 
 typedef std::array<dReal,4> vec4;
 
-class save_simu
+struct save_simu
 {
-public:
     int nb_bodies;
     dBodyID* bodies;
     dGeomID* geoms;
@@ -20,8 +19,9 @@ public:
     save_simu();
     save_simu(int _nb_bodies, dBodyID* _bodies, dGeomID* _geoms);
     ~save_simu();
-    void save();
-    void load();
 };
+
+void save(save_simu &data);
+void load(const save_simu &data);
 
 #endif // SAVE_SIMU_H_INCLUDED

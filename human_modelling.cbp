@@ -41,10 +41,13 @@
 		<Unit filename="include/body.h" />
 		<Unit filename="include/save_simu.h" />
 		<Unit filename="include/util.h" />
+		<Unit filename="include/wall.h" />
+		<Unit filename="include/wall_info.h" />
 		<Unit filename="src/body.cpp" />
 		<Unit filename="src/human_modelling.cpp" />
 		<Unit filename="src/save_simu.cpp" />
 		<Unit filename="src/util.cpp" />
+		<Unit filename="src/wall.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

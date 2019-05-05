@@ -6,20 +6,30 @@
 #include <drawstuff/drawstuff.h>
 #include <time.h>
 #include <unistd.h>
+#include <math.h>
 
 #include "../include/save_simu.h"
 #include "../include/util.h"
 #include "../include/body.h"
+#include "../include/wall.h"
 
 // dynamics and collision objects
 static dWorldID world;
 static dSpaceID space;
 static dJointGroupID contactgroup;
+
+// Climber
 static Ragdoll* climberptr;
+
+// Wall
+static ClimbingWall* wallptr;
 
 static save_simu sauvegarde;
 
 dReal velocities[25];
+
+dReal angles[21];
+int angles_current = 0;
 dReal t = 0.0;
 
 static bool to_load = false;
@@ -56,7 +66,8 @@ static void nearCallback (void *data, dGeomID o1, dGeomID o2)
     contact.surface.bounce_vel = 0.1;
     // constraint force mixing parameter
     contact.surface.soft_cfm = 0.001;
-    if (int numc = dCollide (o1,o2,1,&contact.geom,sizeof(dContact))) {
+    if (int numc = dCollide (o1,o2,1,&contact.geom,sizeof(dContact)))
+    {
         dJointID c = dJointCreateContact (world,contactgroup,&contact);
         dJointAttach (c,b1,b2);
     }
@@ -70,7 +81,8 @@ void start()
     static float hpr[3] = {225.0, -25.0, 0.0};
     dsSetViewpoint(xyz, hpr);
 
-    for (int i = 0; i < 25; ++i) {
+    for (int i = 0; i < 25; ++i)
+    {
         velocities[i] = 0;
     }
     velocities[0] = 1.0;
@@ -93,15 +105,16 @@ static void simLoop (int pause)
     if (to_save)
     {
         to_save = false;
-        sauvegarde.save();
+        save(sauvegarde);
     }
     if (to_load)
     {
         to_load = false;
-        sauvegarde.load();
+        load(sauvegarde);
     }
 
     climberptr->draw();
+    wallptr->draw();
 
     //Drawing the blue capsule
     const dReal *pos, *R; // position, rotation matrix
@@ -120,28 +133,56 @@ static void simLoop (int pause)
 void createCapsule(dBodyID* body, dGeomID* geom, dWorldID world, dSpaceID space, dReal density, dReal length, dReal radius)
 {
     //create capsule body (aligned along the z-axis so that it matches the
-	//GeomCCylinder created below, which is aligned along the z-axis by
-	//default)
-	*body = dBodyCreate(world);
-	dMass M;
-	dMassSetZero(&M);
-	dMassSetCapsule(&M, density, 3, radius, length);
-	dBodySetMass(*body, &M);
+    //GeomCCylinder created below, which is aligned along the z-axis by
+    //default)
+    *body = dBodyCreate(world);
+    dMass M;
+    dMassSetZero(&M);
+    dMassSetCapsule(&M, density, 3, radius, length);
+    dBodySetMass(*body, &M);
 
-	// create a capsule geom for collision detection
-	*geom = dCreateCapsule(space, radius, length);
-	dGeomSetBody(*geom, *body);
+    // create a capsule geom for collision detection
+    *geom = dCreateCapsule(space, radius, length);
+    dGeomSetBody(*geom, *body);
 }
 
 void command(int cmd)
 {
     switch (cmd)
     {
-    case 's': // sauvegarder l'état actuel de la simulation
+    case 'e': // sauvegarder l'état actuel de la simulation
         to_save = true;
         break;
-    case 'l': // charger l'état sauvegardé
+    case 'c': // charger l'état sauvegardé
         to_load = true;
+        break;
+    case 'z':
+        angles[angles_current] = angles[angles_current] + 0.1;
+        if (angles[angles_current] > M_PI)
+            angles[angles_current] -= 2*M_PI;
+        climberptr->setTargetAngles(angles, 0.05);
+        break;
+    case 's':
+        angles[angles_current] = angles[angles_current] - 0.1;
+        if (-angles[angles_current] > M_PI)
+            angles[angles_current] += 2*M_PI;
+        climberptr->setTargetAngles(angles, 0.05);
+        break;
+    case 'd':
+        angles_current = (angles_current + 1)%21;
+        break;
+    case 'q':
+        angles_current = (angles_current - 1)%21;
+        break;
+    case 'p':
+        printf("angles = {");
+        for (int i = 0; i < 20; i++)
+            printf("%f, ", angles[i]);
+        printf("%f}\n", angles[21]);
+        printf("angles_current = %i\n--------\n", angles_current);
+        break;
+    case 'a':
+        climberptr->cost(wallptr, {0,0,0,0});
         break;
     }
 }
@@ -168,8 +209,17 @@ int main(int argc, char **argv)
 
     // create floor
     contactgroup = dJointGroupCreate(0);
+    ground = dCreatePlane(space, 0, 0, 1, 0);
 
     climberptr = new Ragdoll(world, space, density, offset);
+    wallptr = new ClimbingWall(world, space);
+
+    for (int i = 0; i < 21; i++)
+    {
+        angles[i] = 0.1;
+    }
+    //climberptr->setTargetAngles(angles, 0.05);
+    //dBodySetKinematic(climberptr->chest);
 
     // Configuration de la sauvegarde
     dBodyID bodies[NB_PARTS];
@@ -198,7 +248,6 @@ int main(int argc, char **argv)
     dMatrix3 R;
     dRFromAxisAndAngle(R, 1.0, 1.0, 0.0, 0.01);
     dBodySetRotation(cap, R);
-    ground = dCreatePlane(space, 0, 0, 1, 0);
 
     // run simulation
     dsSimulationLoop(argc, argv, 352*3, 288*3, &fn);
