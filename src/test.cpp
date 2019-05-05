@@ -2,6 +2,7 @@
 #include <drawstuff/drawstuff.h>
 
 #include "../include/climber.h"
+#include "../include/save_simu.h"
 
 // dynamics and collision objects
 static dWorldID world;
@@ -9,6 +10,7 @@ static dSpaceID space;
 static dJointGroupID contactgroup;
 static Climber* climberptr;
 static ClimbingWall* wallptr;
+static SaveSimu state;
 
 dReal velocities[25];
 dReal t = 0.0;
@@ -76,6 +78,12 @@ void command(int cmd)
     case 'c':
         printf("cost = %f\n",climberptr->cost(wallptr, {0,0,0,0}));
         break;
+    case 's':
+        save(state);
+        break;
+    case 'l':
+        load(state);
+        break;
     }
 }
 
@@ -109,6 +117,17 @@ int main (int argc, char **argv) {
 
    // create climbing wall
    wallptr = new ClimbingWall(world, space);
+
+    // initialize the SaveSimu object
+    dBodyID bodies[15];
+    dGeomID geoms[15];
+    for (int i = 0; i < 15; i++)
+    {
+        bodies[i] = climberptr->parts[i].body;
+        geoms[i] = climberptr->parts[i].geom;
+    }
+    state = SaveSimu(15, bodies, geoms);
+
 
    // run simulation
    dsSimulationLoop(argc, argv, 640, 480, &fn);
