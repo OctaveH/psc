@@ -1,7 +1,9 @@
 #include <ode/ode.h>
-#include "cmaes.h"
+#include <libcmaes/cmaes.h>
 
 #include "../include/climber.h"
+#include "../include/wall.h"
+#include "../include/save_simu.h"
 
 using namespace libcmaes;
 
@@ -13,7 +15,13 @@ const int N = 21; // number of entries on the target velocity vector
 static dWorldID world;
 static dSpaceID space;
 static dJointGroupID contactgroup;
-static Climber* climberptr;
+
+// objects
+static Climber *climberptr;
+static ClimbingWall *wallptr;
+
+// target stance
+Stance target_stance;
 
 // this is called by dSpaceCollide when two objects in space are
 // potentially colliding.
@@ -36,23 +44,6 @@ static void nearCallback (void *data, dGeomID o1, dGeomID o2) {
        dJointID c = dJointCreateContact (world,contactgroup,&contact);
        dJointAttach (c,b1,b2);
    }
-}
-
-// start simulation - set viewpoint
-static void start() {
-   // create world
-   world = dWorldCreate();
-   space = dHashSpaceCreate(0);
-   dWorldSetGravity(world, 0, 0, -9.81);
-   dWorldSetERP(world, 0.1);
-   dWorldSetCFM(world, 1e-4);
-
-   // create floor
-   dCreatePlane(space, 0, 0, 1, 0);
-
-   // Create climber
-   dVector3 offset = { 0, 0, 0};
-   climberptr = new Climber(world, space, offset);
 }
 
 // simulation loop
@@ -116,7 +107,7 @@ FitFunc mov_step = [](const double *x, const int N) {
       simLoop(step);
 
       // add cost
-      // cost += climberptr->cost(?, ?)/total_dur;
+      cost += climberptr->cost(wallptr, target_stance)/total_dur;
    }
 
    return cost;
@@ -136,13 +127,20 @@ int main (int argc, char **argv) {
    dCreatePlane(space, 0, 0, 1, 0);
    contactgroup = dJointGroupCreate(0);
 
+   // create wall
+   wallptr = new ClimbingWall(world, space);
+
    // create climber
    dVector3 offset = { 0, 0, 2};
    climberptr = new Climber(world, space, offset);
 
-   // run optimization
-   start();
+   // set target stance
+   target_stance.lf_hold =  0;
+   target_stance.lh_hold = -1;
+   target_stance.rf_hold = -1;
+   target_stance.rh_hold = -1;
 
+   // run optimization
    double sigma = 1.0; // initial step-size, i.e. estimated initial parameter error
    std::vector<double> x0(DIM, 0.0); // initialize x0 as 0 in all dimensions
    CMAParameters<> cmaparams(x0, sigma);
