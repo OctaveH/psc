@@ -379,6 +379,52 @@ void Climber::setTargetVelocities(dReal *velocities) {
     dJointSetHingeParam(wrist_right, dParamFMax, F_MAX);
 
     dJointSetHingeParam(wrist_left, dParamVel, velocities[i++]);
+    dJointSetHingeParam(wrist_left, dParamFMax, F_MAX);
+}
+
+void Climber::getAngularVelocities(dReal *velocities) {
+    int i = 0;
+
+    // neck
+    velocities[i++] = dJointGetAMotorParam(neck_motor, dParamVel1);
+    velocities[i++] = dJointGetAMotorParam(neck_motor, dParamVel2);
+    velocities[i++] = dJointGetAMotorParam(neck_motor, dParamVel3);
+
+    // hips
+    velocities[i++] = dJointGetUniversalParam(hip_right, dParamVel1);
+    velocities[i++] = dJointGetUniversalParam(hip_right, dParamVel2);
+
+    velocities[i++] = dJointGetUniversalParam(hip_left, dParamVel1);
+    velocities[i++] = dJointGetUniversalParam(hip_left, dParamVel2);
+
+    // knees
+    velocities[i++] = dJointGetHingeParam(knee_right, dParamVel);
+
+    velocities[i++] = dJointGetHingeParam(knee_left, dParamVel);
+
+    // ankles
+    velocities[i++] = dJointGetHingeParam(ankle_right, dParamVel);
+
+    velocities[i++] = dJointGetHingeParam(ankle_left, dParamVel);
+
+    // shoulders
+    velocities[i++] = dJointGetAMotorParam(shoulder_right_motor, dParamVel1);
+    velocities[i++] = dJointGetAMotorParam(shoulder_right_motor, dParamVel2);
+    velocities[i++] = dJointGetAMotorParam(shoulder_right_motor, dParamVel3);
+
+    velocities[i++] = dJointGetAMotorParam(shoulder_left_motor, dParamVel1);
+    velocities[i++] = dJointGetAMotorParam(shoulder_left_motor, dParamVel2);
+    velocities[i++] = dJointGetAMotorParam(shoulder_left_motor, dParamVel3);
+
+    // elbows
+    velocities[i++] = dJointGetHingeParam(elbow_right, dParamVel);
+
+    velocities[i++] = dJointGetHingeParam(elbow_left, dParamVel);
+
+    // wrists
+    velocities[i++] = dJointGetHingeParam(wrist_right, dParamVel);
+
+    velocities[i++] = dJointGetHingeParam(wrist_left, dParamVel);
 }
 
 float Climber::cost(ClimbingWall* wallptr, Stance target_stance)

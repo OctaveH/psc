@@ -159,6 +159,7 @@ class Climber {
         Climber(dWorldID _world, dSpaceID _space, dVector3 _offset);
         void draw();
         void setTargetVelocities(dReal *velocities);
+        void getAngularVelocities(dReal *velocities);
         float cost(ClimbingWall* wallptr, Stance target_stance);
 };
 
