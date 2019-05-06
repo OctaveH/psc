@@ -6,6 +6,97 @@
 #include "../include/climber.h"
 #include "../include/climber_info.h"
 
+/*
+ *  Body part positions for a T-pose facing the +x direction
+ *  (Note: do not change the order of these declarations)
+ */
+
+// Feet
+const vec3 FOOT_RIGHT_1 = { -LEG_RADIUS, HIP_WIDTH/2, FOOT_RADIUS };
+const vec3 FOOT_RIGHT_2 = { FOOT_LENGTH-LEG_RADIUS, HIP_WIDTH/2, FOOT_RADIUS };
+
+const vec3 FOOT_LEFT_1 = { -LEG_RADIUS, -HIP_WIDTH/2, FOOT_RADIUS };
+const vec3 FOOT_LEFT_2 = { FOOT_LENGTH-LEG_RADIUS, -HIP_WIDTH/2, FOOT_RADIUS };
+
+// Legs
+const vec3 LEG_RIGHT_1 = { 0.0, HIP_WIDTH/2, 2*FOOT_RADIUS };
+const vec3 LEG_RIGHT_2 = { 0.0, HIP_WIDTH/2, LEG_RIGHT_1[2]+LEG_LENGTH };
+
+const vec3 LEG_LEFT_1 = { 0.0, -HIP_WIDTH/2, 2*FOOT_RADIUS };
+const vec3 LEG_LEFT_2 = { 0.0, -HIP_WIDTH/2, LEG_LEFT_1[2]+LEG_LENGTH };
+
+// Thighs
+const vec3 THIGH_RIGHT_1 = { 0.0, HIP_WIDTH/2, LEG_RIGHT_2[2] };
+const vec3 THIGH_RIGHT_2 = { 0.0, HIP_WIDTH/2, THIGH_RIGHT_1[2]+THIGH_LENGTH };
+
+const vec3 THIGH_LEFT_1 = { 0.0, -HIP_WIDTH/2, LEG_LEFT_2[2] };
+const vec3 THIGH_LEFT_2 = { 0.0, -HIP_WIDTH/2, THIGH_LEFT_1[2]+THIGH_LENGTH };
+
+//  Lower Body
+const vec3 LBODY_1 = { 0.0, 0.0, THIGH_RIGHT_2[2] };
+const vec3 LBODY_2 = { 0.0, 0.0, LBODY_1[2]+LBODY_LENGTH };
+
+// High (Top) Body
+const vec3 HBODY_1 = { 0.0, 0.0, LBODY_2[2] };
+const vec3 HBODY_2 = { 0.0, 0.0, HBODY_1[2]+HBODY_LENGTH };
+
+// Head
+const vec3 HEAD_1 = { 0.0, 0.0, HBODY_2[2]+NECK_LENGTH };
+const vec3 HEAD_2 = { 0.0, 0.0, HEAD_1[2]+HEAD_LENGTH };
+
+// Arms
+const vec3 ARM_RIGHT_1 = { 0.0, SHOULDER_WIDTH/2, HBODY_2[2] };
+const vec3 ARM_RIGHT_2 = { 0.0, ARM_RIGHT_1[1]+ARM_LENGTH, ARM_RIGHT_1[2] };
+
+const vec3 ARM_LEFT_1 = { 0.0, -SHOULDER_WIDTH/2, HBODY_2[2] };
+const vec3 ARM_LEFT_2 = { 0.0, ARM_LEFT_1[1]-ARM_LENGTH, ARM_LEFT_1[2] };
+
+// Forearms
+const vec3 FOREARM_RIGHT_1 = { 0.0, ARM_RIGHT_2[1], HBODY_2[2] };
+const vec3 FOREARM_RIGHT_2 = { 0.0, FOREARM_RIGHT_1[1]+FOREARM_LENGTH, FOREARM_RIGHT_1[2] };
+
+const vec3 FOREARM_LEFT_1 = { 0.0, ARM_LEFT_2[1], HBODY_2[2] };
+const vec3 FOREARM_LEFT_2 = { 0.0, FOREARM_LEFT_1[1]-FOREARM_LENGTH, FOREARM_LEFT_1[2] };
+
+// Hands
+const vec3 HAND_RIGHT_1 = { 0.0, FOREARM_RIGHT_2[1], HBODY_2[2] };
+const vec3 HAND_RIGHT_2 = { 0.0, HAND_RIGHT_1[1]+HAND_LENGTH, HAND_RIGHT_1[2] };
+
+const vec3 HAND_LEFT_1 = { 0.0, FOREARM_LEFT_2[1], HBODY_2[2] };
+const vec3 HAND_LEFT_2 = { 0.0, HAND_LEFT_1[1]-HAND_LENGTH, HAND_LEFT_1[2] };
+
+/*
+ *  Joint positions for a T-pose facing the +x direction
+ *  (Note: do not change the order of these declarations)
+ */
+
+// Neck
+const vec3 NECK_POS = HBODY_2 + vec3({ 0.0, 0.0, NECK_LENGTH/2});
+
+// Hip
+const vec3 HIP_RIGHT_POS = THIGH_RIGHT_2;
+const vec3 HIP_LEFT_POS = THIGH_LEFT_2;
+
+// Knees
+const vec3 KNEE_RIGHT_POS = LEG_RIGHT_2;
+const vec3 KNEE_LEFT_POS = LEG_LEFT_2;
+
+// Ankles
+const vec3 ANKLE_RIGHT_POS = LEG_RIGHT_1;
+const vec3 ANKLE_LEFT_POS = LEG_LEFT_1;
+
+// Shoulders
+const vec3 SHOULDER_RIGHT_POS = HBODY_2 + vec3({ 0.0, SHOULDER_WIDTH/2, 0.0});
+const vec3 SHOULDER_LEFT_POS = HBODY_2 + vec3({ 0.0, -SHOULDER_WIDTH/2, 0.0});
+
+// Elbows
+const vec3 ELBOW_RIGHT_POS = ARM_RIGHT_2;
+const vec3 ELBOW_LEFT_POS = ARM_LEFT_2;
+
+// Wrists
+const vec3 WRIST_RIGHT_POS = FOREARM_RIGHT_2;
+const vec3 WRIST_LEFT_POS = FOREARM_LEFT_2;
+
 // Cost function constants
 #define K_DIR 0.5 // 1
 #define K_SIGMA 0.0025 // meters
@@ -16,6 +107,9 @@
 #define K_FORCE 250 // Newtons
 #define R_H 0.125 // meters
 #define THETA_0 2.09 // rad
+
+// Maximum torque
+const dReal F_MAX = 100.0;
 
 const vec3 rightAxis = { 0.0, 1.0, 0.0 };
 const vec3 leftAxis = { 0.0, -1.0, 0.0 };
@@ -176,7 +270,6 @@ int Climber::addCapsule(const dVector3& p1, const dVector3& p2, dReal radius) {
 
     // calculate length of the capsule (control this if want the capsules to touch)
 	dReal cap_len = dist3(pos1, pos2)-2*radius;
-    printf("cap_len = %f\n", cap_len);
 
     // create capsule
 	dBodyID capsule = dBodyCreate(world);
@@ -307,12 +400,17 @@ dJointID Climber::addUniversalJoint(int part1, int part2, const dVector3 anchor,
 }
 
 void Climber::draw() {
-    const dReal *R, *pos; // rotation matrix and position vector of the body part
     for(int i=0; i<15; ++i) {
-        pos = dBodyGetPosition(parts[i].body);
-        R = dBodyGetRotation(parts[i].body);
+        const dReal *pos = dBodyGetPosition(parts[i].body);
+        const dReal *R = dBodyGetRotation(parts[i].body);
 
-        dsDrawCapsuleD(pos, R, parts[i].length, parts[i].radius);
+        const double _pos[4] = { pos[0], pos[1], pos[2], pos[3] };
+        const double _R[12] = { R[0], R[ 1], R[ 2],
+                                R[3], R[ 4], R[ 5],
+                                R[6], R[ 7], R[ 8],
+                                R[9], R[10], R[11] };
+
+        dsDrawCapsuleD(_pos, _R, parts[i].length, parts[i].radius);
     }
 }
 

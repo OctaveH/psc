@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <ode/ode.h>
 #include <libcmaes/cmaes.h>
 
@@ -9,7 +11,7 @@ using namespace libcmaes;
 
 
 const int DIM = 44; // the number of dimensions on the mov_step function
-const int N = 21; // number of entries on the target velocity vector
+const int N_VEL = 21; // number of entries on the target velocity vector
 
 // dynamics and collision objects
 static dWorldID world;
@@ -64,41 +66,40 @@ static void simLoop(dReal step) {
  *  - x[1] is the duration of the second interval
  *  - x[  2:  N+1] are the target angular velocities of the first keyframe
  *  - x[N+2:2*N+1] are the target angular velocities of the second keyframe
- * 
  */
 
 FitFunc mov_step = [](const double *x, const int N) {
    // decode input
    const dReal dur1 = 0.25 + 0.05*x[0];
    const dReal dur2 = 0.25 + 0.05*x[1];
-   dReal vels1[N];
-   dReal vels2[N];
-   
+   dReal vels1[N_VEL];
+   dReal vels2[N_VEL];
+
    const dReal total_dur = dur1 + dur2;
-   for (int i = 0; i < N; ++i) {
-      vels1[i] = (dReal) x[i+2];
-      vels2[i] = (dReal) x[i+N+2];
+   for (int i = 0; i < N_VEL; ++i) {
+      vels1[i] = (dReal) (0.2*x[i+2] - 1.0);
+      vels2[i] = (dReal) (0.2*x[i+N_VEL+2] - 1.0);
    }
 
    // TODO: load last save
 
    // get start velocities
-   dReal vels0[N];
+   dReal vels0[N_VEL];
    climberptr->getAngularVelocities(vels0);
 
    // simulate the movement
    dReal cost = 0;
-   dReal t_vels[N];
-   const dReal step = 0.01;
+   dReal t_vels[N_VEL];
+   const dReal step = 0.03;
    
    for (dReal t = 0; t < total_dur; t += step) {
       // linear interpolation of the target velocities
       if (t <= dur1) {
-         for (int i = 0; i < N; ++i) 
-            t_vels[i] = vels0[i] + vels1[i]*t/dur1; 
+         for (int i = 0; i < N_VEL; ++i) 
+            t_vels[i] = vels0[i] + (vels1[i]-vels0[i])*t/dur1; 
       }
       else {
-         for (int i = 0; i < N; ++i)
+         for (int i = 0; i < N_VEL; ++i)
             t_vels[i] = vels1[i] + (vels2[i]-vels1[i])*(t-dur1)/(dur2-dur1);
       }
       climberptr->setTargetVelocities(t_vels);
@@ -107,14 +108,14 @@ FitFunc mov_step = [](const double *x, const int N) {
       simLoop(step);
 
       // add cost
-      cost += climberptr->cost(wallptr, target_stance)/total_dur;
+      cost += climberptr->cost(wallptr, target_stance);
    }
 
    return cost;
 };
 
 int main (int argc, char **argv) {
-   dInitODE ();
+   dInitODE();
 
    // create world
    world = dWorldCreate();
@@ -122,7 +123,7 @@ int main (int argc, char **argv) {
    dWorldSetGravity(world, 0, 0, -9.81);
    dWorldSetERP(world, 0.1);
    dWorldSetCFM(world, 1e-4);
-   
+
    // create floor
    dCreatePlane(space, 0, 0, 1, 0);
    contactgroup = dJointGroupCreate(0);
@@ -131,26 +132,37 @@ int main (int argc, char **argv) {
    wallptr = new ClimbingWall(world, space);
 
    // create climber
-   dVector3 offset = { 0, 0, 2};
+   dVector3 offset = { 0, 0, 0};
    climberptr = new Climber(world, space, offset);
 
    // set target stance
-   target_stance.lf_hold =  0;
-   target_stance.lh_hold = -1;
+   target_stance.lf_hold = -1;
+   target_stance.lh_hold =  2;
    target_stance.rf_hold = -1;
    target_stance.rh_hold = -1;
 
    // run optimization
    double sigma = 1.0; // initial step-size, i.e. estimated initial parameter error
    std::vector<double> x0(DIM, 0.0); // initialize x0 as 0 in all dimensions
-   CMAParameters<> cmaparams(x0, sigma);
+
+   double lbounds[DIM], ubounds[DIM];
+   for (int i=0; i < DIM; ++i) {
+      lbounds[i] =  0.0;
+      ubounds[i] = 10.0;
+   }
+   GenoPheno<pwqBoundStrategy> gp(lbounds, ubounds, DIM);
+
+   CMAParameters<GenoPheno<pwqBoundStrategy>> cmaparams(x0, sigma, -1, 0, gp);
    cmaparams.set_algo(aCMAES);  // select active CMA-ES as algorithm (default is CMA-ES). double sigma = 0.1
 
-   CMASolutions cmasols = cmaes<>(mov_step, cmaparams);
+   CMASolutions cmasols = cmaes<GenoPheno<pwqBoundStrategy>>(mov_step, cmaparams);
 
-   std::cout << "best solution: " << cmasols << std::endl;
-   std::cout << "optimization took " << cmasols.elapsed_time() / 1000.0 << " seconds\n";
-   std::cout << cmasols.run_status(); // the optimization status, failed if < 0
+   std::vector<double> best_sol = cmasols.best_candidate().get_x();
+   for (int i = 0; i < DIM; ++i)
+      std::cout << best_sol[i] << " ";
+   std::cout << std::endl;
+
+   std::cout << "optimization took " << cmasols.elapsed_time() / 1000.0 << " seconds" << std::endl;
 
    // clean up
    dJointGroupDestroy(contactgroup);
