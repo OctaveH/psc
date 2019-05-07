@@ -36,7 +36,7 @@ static void nearCallback (void *data, dGeomID o1, dGeomID o2)
    dContact contact;
    contact.surface.mode = dContactBounce | dContactSoftCFM;
    // friction parameter
-   contact.surface.mu = 0.5;
+   contact.surface.mu = 50;
    // bounce is the amount of "bouncyness".
    contact.surface.bounce = 0;
    // bounce_vel is the minimum incoming velocity to cause a bounce
@@ -138,7 +138,7 @@ int main (int argc, char **argv) {
    contactgroup = dJointGroupCreate(0);
 
    // create climber
-   dVector3 offset = { 0, 0, 0};
+   dVector3 offset = { 0, 0, 0.1};
    climberptr = new Climber(world, space, offset);
 
    // create wall
